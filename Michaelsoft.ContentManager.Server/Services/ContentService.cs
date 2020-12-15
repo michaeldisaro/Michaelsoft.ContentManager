@@ -29,14 +29,11 @@ namespace Michaelsoft.ContentManager.Server.Services
 
         private DbContent GetById(string id) => _contents.Find<DbContent>(content => content.Id == id).FirstOrDefault();
 
-        public DbContent Create()
+        public DbContent Create(DbContent content)
         {
             //TODO: Hash content and save hashes to index it
-            var content = new DbContent
-            {
-                Created = DateTime.Now,
-                Updated = DateTime.Now
-            };
+            content.Created = DateTime.Now;
+            content.Updated = DateTime.Now;
 
             _contents.InsertOne(content);
             return content;
@@ -62,6 +59,7 @@ namespace Michaelsoft.ContentManager.Server.Services
             var content = GetById(id);
             if (content == null) throw new ContentNotFoundException();
             content.Updated = DateTime.Now;
+
             // TODO: Map data to content
             _contents.ReplaceOne(c => c.Id == content.Id, content);
         }
