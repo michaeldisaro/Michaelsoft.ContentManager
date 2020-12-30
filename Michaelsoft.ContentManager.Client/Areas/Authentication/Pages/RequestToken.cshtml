@@ -1,0 +1,19 @@
+﻿@page
+@model Michaelsoft.ContentManager.Client.Areas.Authentication.Pages.RequestToken
+
+@{
+    Layout = "_ContentManagerLayout";
+}
+
+<div class="content-manager_client-form_outer">
+    <div class="content-manager_client-form_middle">
+        <div class="content-manager_client-form_inner">
+            <h1>Request Token</h1>
+            <div class="content-manager_client-form_container">
+                @{
+                    await Html.RenderPartialAsync("_RequestTokenForm", Model.RequestTokenForm);
+                }
+            </div>
+        </div>
+    </div>
+</div>

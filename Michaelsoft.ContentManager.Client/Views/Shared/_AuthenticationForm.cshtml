@@ -1,0 +1,16 @@
+﻿<input type="text" id="author">
+<button class="btn btn-primary" onclick="RequestToken">RequestToken</button>
+
+<input type="file" id="certificate-file" onchange="window.loadCertificate()">
+<textarea id="certificate-text"></textarea>
+<button class="btn btn-primary" onclick="Authorize">Authorize</button>
+
+<script type="text/javascript">
+function loadCertificate() {
+    var fr = new FileReader();
+    fr.onload = function () {
+        document.getElementById('certificate-text').value = fr.result;
+    };
+    fr.readAsText(document.getElementById('certificate-file').files[0]);
+}
+</script>

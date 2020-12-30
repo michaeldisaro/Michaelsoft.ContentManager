@@ -12,11 +12,17 @@ namespace Michaelsoft.ContentManager.Server.Extensions
         public static void AddEncryptionService(this IServiceCollection services,
                                                 IConfiguration configuration)
         {
-            services.Configure<EncryptionSettings>
-                (configuration.GetSection(nameof(EncryptionSettings)));
+            services.Configure<SymmetricEncryptionSettings>
+                (configuration.GetSection(nameof(SymmetricEncryptionSettings)));
 
-            services.AddSingleton<IEncryptionSettings>
-                (sp => sp.GetRequiredService<IOptions<EncryptionSettings>>().Value);
+            services.AddSingleton<ISymmetricEncryptionSettings>
+                (sp => sp.GetRequiredService<IOptions<SymmetricEncryptionSettings>>().Value);
+
+            services.Configure<AsymmetricEncryptionSettings>
+                (configuration.GetSection(nameof(AsymmetricEncryptionSettings)));
+
+            services.AddSingleton<IAsymmetricEncryptionSettings>
+                (sp => sp.GetRequiredService<IOptions<AsymmetricEncryptionSettings>>().Value);
 
             services.AddSingleton<DatabaseEncryptionService>();
 

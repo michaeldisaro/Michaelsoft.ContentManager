@@ -1,0 +1,7 @@
+﻿<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ALL IN" type="CompoundRunConfigurationType">
+    <toRun name="Michaelsoft.ContentManager.TestWebApp" type="LaunchSettings" />
+    <toRun name="Michaelsoft.ContentManager.Server" type="LaunchSettings" />
+    <method v="2" />
+  </configuration>
+</component>

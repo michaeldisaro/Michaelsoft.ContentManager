@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Text;
+using System.Text.Unicode;
+using Michaelsoft.ContentManager.Common.Encryption;
 using Michaelsoft.ContentManager.Common.Extensions;
+using Michaelsoft.ContentManager.Common.HttpModels.Authentication;
 using Michaelsoft.ContentManager.Server.Services;
+using Michaelsoft.ContentManager.Server.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,37 +23,52 @@ namespace Michaelsoft.ContentManager.Server.Controllers
 
         private readonly TokenService _tokenService;
 
-        public AuthenticationController(TokenService tokenService)
+        private readonly IAsymmetricEncryptionSettings _asymmetricEncryptionSettings;
+
+        public AuthenticationController(TokenService tokenService,
+                                        IAsymmetricEncryptionSettings asymmetricEncryptionSettings)
         {
+            _asymmetricEncryptionSettings = asymmetricEncryptionSettings;
             _tokenService = tokenService;
         }
 
         [AllowAnonymous]
-        [HttpGet("[action]/{author}")]
+        [HttpPost("[action]")]
         [Produces("application/json")]
-        public string GetToken(string author)
+        public TokenResponse Token([FromBody]
+                                   TokenRequest tokenRequest)
         {
             try
             {
-                var value = (author + StringHelper.RandomString(10)).Sha1();
-                _tokenService.Create(AccessTokenType, value, author, 900);
-                return value;
+                var value = (tokenRequest.Author + DateTime.Now + StringHelper.RandomString(4)).Sha1();
+                _tokenService.Create(AccessTokenType, value, tokenRequest.Author, 90);
+                return new TokenResponse
+                {
+                    Token = value
+                };
             }
             catch (Exception ex)
             {
-                return null;
+                return new TokenResponse
+                {
+                    Success = false,
+                    Message = ex.Message
+                };
             }
         }
 
         [AllowAnonymous]
         [HttpPost("[action]")]
         [Produces("application/json")]
-        public bool Authorize([FromBody]
-                              string encodedToken)
+        public AuthorizeResponse Authorize([FromBody]
+                                           AuthorizeRequest authorizeRequest)
         {
             try
             {
-                var value = encodedToken; // TODO: Decode with public key
+                var value = RsaHelper
+                    .DecryptString(authorizeRequest.EncryptedToken,
+                                   _asymmetricEncryptionSettings.PublicKey,
+                                   false, true);
                 var token = _tokenService.GetTokenByTypeAndValue(AccessTokenType, value);
 
                 var claims = new List<Claim>
@@ -61,27 +81,37 @@ namespace Michaelsoft.ContentManager.Server.Controllers
 
                 HttpContext.User = new ClaimsPrincipal(identity);
 
-                return true;
+                _tokenService.Delete(token.Id);
+
+                return new AuthorizeResponse();
             }
             catch (Exception ex)
             {
-                return false;
+                return new AuthorizeResponse
+                {
+                    Success = false,
+                    Message = ex.Message
+                };
             }
         }
 
         [Authorize]
         [HttpPost("[action]")]
         [Produces("application/json")]
-        public bool Logout()
+        public LogoutResponse Logout()
         {
             try
             {
                 HttpContext.User = null;
-                return true;
+                return new LogoutResponse();
             }
             catch (Exception ex)
             {
-                return false;
+                return new LogoutResponse
+                {
+                    Success = false,
+                    Message = ex.Message
+                };
             }
         }
 

@@ -1,0 +1,73 @@
+﻿body {
+    background-color: #306684;
+    color: white;
+    font-family: verdana, sans-serif;
+    font-variant: petite-caps;
+}
+
+a {
+    color: lightgray;
+}
+
+a:visited {
+    color: lightgray;
+}
+
+a:hover {
+    color: cornflowerblue;
+}
+
+div.content-manager_client-form_outer {
+    display: table;
+    width: 100%;
+    height: 100vh;
+}
+
+div.content-manager_client-form_middle {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+div.content-manager_client-form_inner {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+div.content-manager_client-form_inner .card{
+    background-color: #ffffff1a;
+}
+
+div.content-manager_client-form_inner .card .card-header,
+div.content-manager_client-form_inner .card .card-footer{
+    background-color: #0000004d;
+}
+
+div.content-manager_client-form_container {
+    width: 300px;
+    margin: auto;
+}
+
+div.content-manager_client-form_container .text-danger {
+    color: lightcoral !important;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    padding: 10px;
+}
+
+footer div.content-manager_logo {
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+footer div.content-manager_copyright {
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+footer div.content-manager_copyright div.title {
+    color: cornflowerblue;
+}

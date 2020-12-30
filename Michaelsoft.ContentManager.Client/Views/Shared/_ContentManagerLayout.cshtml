@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"] - ContentManager</title>
+    <link rel="stylesheet" href="~/_content/Michaelsoft.ContentManager.Client/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/_content/Michaelsoft.ContentManager.Client/css/contentmanager.css"/>
+</head>
+<body>
+<div class="container">
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
+<hr>
+<footer>
+    <div class="content-manager_logo">
+        <img src="/_content/Michaelsoft.ContentManager.Client/images/content-manager-logo.png" alt="contentmanager" height="100px">
+    </div>
+    <div class="content-manager_copyright">
+        <div class="title">Content Manager</div>
+        <div class="link">Open Source by <a href="https://github.com/michaeldisaro">Michael Disarò</a></div>
+    </div>
+</footer>
+<script src="~/_content/Michaelsoft.ContentManager.Client/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/_content/Michaelsoft.ContentManager.Client/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/_content/Michaelsoft.ContentManager.Client/js/jsencrypt.min.js"></script>
+<script src="~/_content/Michaelsoft.ContentManager.Client/js/content-manager.js"></script>
+@RenderSection("Scripts", required: false)
+</body>
+</html>

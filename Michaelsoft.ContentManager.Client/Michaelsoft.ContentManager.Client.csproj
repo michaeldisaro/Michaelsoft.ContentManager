@@ -3,25 +3,24 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RazorLangVersion>3.0</RazorLangVersion>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <LangVersion>8</LangVersion>
   </PropertyGroup>
-
-
+  
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.10" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.10" />
   </ItemGroup>
-
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="wwwroot\background.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\exampleJsInterop.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\styles.css" />
-  </ItemGroup>
-
-
+  
   <ItemGroup>
     <ProjectReference Include="..\Michaelsoft.ContentManager.Common\Michaelsoft.ContentManager.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="wwwroot\**\*" />
+    <EmbeddedResource Include="Resources\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,17 @@
+﻿@page
+@model IndexModel
+
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <legend class="display-4">Content Manager Test</legend>
+
+    <partial name="_Message" for="Message"/>
+
+    @{
+        await Html.RenderPartialAsync("_AuthenticationForm");
+    }
+
+</div>

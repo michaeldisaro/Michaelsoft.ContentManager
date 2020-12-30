@@ -10,10 +10,10 @@ namespace Michaelsoft.ContentManager.Server.Services
 
         private readonly byte[] _aesIv;
 
-        public DatabaseEncryptionService(IEncryptionSettings encryptionSettings)
+        public DatabaseEncryptionService(ISymmetricEncryptionSettings symmetricEncryptionSettings)
         {
-            _aesKey = EncodingHelper.FromSafeUrlBase64(encryptionSettings.DataEncryptionKey);
-            _aesIv = EncodingHelper.FromSafeUrlBase64(encryptionSettings.DataEncryptionIv);
+            _aesKey = EncodingHelper.FromSafeUrlBase64(symmetricEncryptionSettings.DataEncryptionKey);
+            _aesIv = EncodingHelper.FromSafeUrlBase64(symmetricEncryptionSettings.DataEncryptionIv);
         }
 
         public string Encrypt(string data)

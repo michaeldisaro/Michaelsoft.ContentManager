@@ -1,0 +1,42 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model Michaelsoft.ContentManager.Client.Models.Forms.AuthorizeForm
+@inject IViewLocalizer Localizer
+
+<form id="authorize-form" method="post" asp-area="Authentication" asp-page="/Authorize">
+    <div class="authorize-form">
+        <input type="hidden" id="token" asp-for="Token"/>
+        <input type="hidden" id="encrypted-token" asp-for="AuthorizeRequest.EncryptedToken"/>
+        <div class="form-group">
+            <div class="content-manager_form-label">
+                <label>Certificate</label>
+            </div>
+            <div class="content-manager_form-input">
+                <input type="file" id="certificate-file" onchange="loadCertificate()">
+                <textarea id="certificate-text" rows="15" style="width:100%;resize:none;"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-sm btn-block">@Localizer[Model.AuthorizeLabel]</button>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    function loadCertificate() {
+        var fr = new FileReader();
+        fr.onload = function () {
+            document.getElementById('certificate-text').value = fr.result;
+        };
+        fr.readAsText(document.getElementById('certificate-file').files[0]);
+    }
+    
+    function encryptToken(){
+        var token = document.getElementById('token').value;
+        var privateKey = document.getElementById('certificate-text').value;        
+        var cipher = new JSEncrypt();
+        cipher.setKey(privateKey);
+        document.getElementById('encrypted-token').value = cipher.encrypt(token, true);
+    }
+    
+    document.getElementById("authorize-form").addEventListener("submit",encryptToken);
+</script>
