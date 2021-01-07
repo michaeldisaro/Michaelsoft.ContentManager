@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Michaelsoft.ContentManager.Common.Extensions
 {
@@ -14,6 +16,12 @@ namespace Michaelsoft.ContentManager.Common.Extensions
         {
             if (string.IsNullOrEmpty(s)) return string.Empty;
             return char.ToUpper(s[0]) + s.Substring(1);
+        }
+
+        public static string ToUrlFriendly(this string s)
+        {
+            if (string.IsNullOrEmpty(s)) return string.Empty;
+            return Regex.Replace(s.ToLower(), "[^a-z0-9\\s\\-]+", "").Replace(" ", "-");
         }
 
         public static string Sha1(this string s)
@@ -37,14 +45,31 @@ namespace Michaelsoft.ContentManager.Common.Extensions
         }
 
         public static string RandomString(int length,
-                                          string symbols = "")
+                                          string symbols = "",
+                                          bool uppercase = true,
+                                          bool lowercase = true,
+                                          bool numbers = true)
         {
-            var groups = new[] {"ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz", "0123456789", symbols};
+            if (symbols.IsNullOrEmpty() && !uppercase && !lowercase && !numbers)
+                throw new Exception("Cannot generate a random string with these arguments.");
+
+            var groups = new List<string>();
+
+            if (uppercase)
+                groups.Add("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+
+            if (lowercase)
+                groups.Add("abcdefghijklmnopqrstuvwxyz");
+
+            if (numbers)
+                groups.Add("0123456789");
+
+            groups.Add(symbols);
 
             var sb = new StringBuilder();
             for (var i = 0; i < length; i++)
             {
-                var group = groups[i % 4];
+                var group = groups[i % groups.Count];
                 if (group.IsNullOrEmpty()) group = groups[0];
                 sb.Append(new string(Enumerable.Repeat(group, 1)
                                                .Select(s => s[Random.Next(s.Length)]).ToArray()));

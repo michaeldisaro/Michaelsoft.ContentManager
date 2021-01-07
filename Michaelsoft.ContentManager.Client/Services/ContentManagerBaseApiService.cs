@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -181,7 +182,7 @@ namespace Michaelsoft.ContentManager.Client.Services
 
                 var json = await response.Content.ReadAsStringAsync();
                 var authenticated = response.Headers.TryGetValues("bearer", out var bearers);
-                /*if (authenticated)
+                if (authenticated)
                 {
                     var bearer = bearers.FirstOrDefault();
                     _httpContextAccessor.HttpContext.Response.Cookies.Append
@@ -191,7 +192,7 @@ namespace Michaelsoft.ContentManager.Client.Services
                 else
                 {
                     _httpContextAccessor.HttpContext.Response.Cookies.Delete("bearer");
-                }*/
+                }
 
                 return new BaseApiResult
                 {

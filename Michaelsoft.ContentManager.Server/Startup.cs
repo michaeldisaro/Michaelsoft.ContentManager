@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Michaelsoft.ContentManager.Common.BaseClasses;
 using Michaelsoft.ContentManager.Server.Extensions;
 using Michaelsoft.ContentManager.Server.Services;
 using Michaelsoft.ContentManager.Server.Settings;
@@ -36,6 +37,7 @@ namespace Michaelsoft.ContentManager.Server
             services.AddHttpContextAccessor();
             services.AddEncryptionService(Configuration);
             services.AddTokenService(Configuration);
+            services.AddContentService(Configuration);
 
             services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
 
@@ -142,9 +144,14 @@ namespace Michaelsoft.ContentManager.Server
                         swaggerDoc.Paths = paths;
                     });
                 });
-                app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "ContentManager Server API V1"); });
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ContentManager Server API V1");
+                });
             }
 
+            InjectableServicesBaseStaticClass.Services = app.ApplicationServices;
+            
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());

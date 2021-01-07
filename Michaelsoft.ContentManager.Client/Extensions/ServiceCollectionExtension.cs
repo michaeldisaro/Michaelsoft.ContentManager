@@ -20,7 +20,7 @@ namespace Michaelsoft.ContentManager.Client.Extensions
     {
 
         public static void AddContentManager(this IServiceCollection services,
-                                        IConfiguration configuration)
+                                             IConfiguration configuration)
         {
             services.Configure<ContentManagerClientSettings>
                 (configuration.GetSection(nameof(ContentManagerClientSettings)));
@@ -59,12 +59,13 @@ namespace Michaelsoft.ContentManager.Client.Extensions
             services.AddHttpContextAccessor();
 
             services.AddSingleton<IContentManagerAuthenticationApiService, ContentManagerAuthenticationApiService>();
+            services.AddSingleton<IContentManagerContentApiService, ContentManagerContentApiService>();
 
             services.AddRazorPages()
                     .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                     .AddDataAnnotationsLocalization()
                     .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-            
+
             services.AddServerSideBlazor();
         }
 

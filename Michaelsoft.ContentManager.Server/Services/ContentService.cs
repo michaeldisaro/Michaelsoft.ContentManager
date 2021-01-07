@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Michaelsoft.ContentManager.Common.Extensions;
 using Michaelsoft.ContentManager.Server.DatabaseModels;
 using Michaelsoft.ContentManager.Server.Exceptions;
 using Michaelsoft.ContentManager.Server.Settings;
@@ -29,9 +30,31 @@ namespace Michaelsoft.ContentManager.Server.Services
 
         private DbContent GetById(string id) => _contents.Find<DbContent>(content => content.Id == id).FirstOrDefault();
 
+        private DbContent GetByHashes(string titleHash,
+                                      string textContentHash,
+                                      string htmlContentHash) =>
+            _contents.Find<DbContent>(content => content.TitleHash == titleHash &&
+                                                 content.TextContentHash == textContentHash &&
+                                                 content.HtmlContentHash == htmlContentHash).FirstOrDefault();
+
+        private bool CheckUrlFriendlyTitle(string urlFriendlyTitle) =>
+            _contents.Find<DbContent>(content => content.UrlFriendlyTitle == urlFriendlyTitle).CountDocuments() > 0;
+        
+        public DbContent GetByUrlFriendlyTitle(string urlFriendlyTitle) =>
+            _contents.Find<DbContent>(content => content.UrlFriendlyTitle == urlFriendlyTitle).FirstOrDefault();
+
         public DbContent Create(DbContent content)
         {
-            //TODO: Hash content and save hashes to index it
+            var existingContent = GetByHashes(content.TitleHash, content.TextContentHash, content.HtmlContentHash);
+            if (existingContent != null) return existingContent;
+
+            content.UrlFriendlyTitle = content.Title.ToUrlFriendly();
+            if (CheckUrlFriendlyTitle(content.UrlFriendlyTitle))
+                content.UrlFriendlyTitle += "_" + StringHelper.RandomString(16, uppercase: false);
+
+            content.TitleHash = content.Title.Sha1();
+            content.HtmlContentHash = content.HtmlContent.Sha1();
+            content.TextContentHash = content.TextContent.Sha1();
             content.Created = DateTime.Now;
             content.Updated = DateTime.Now;
 
@@ -58,9 +81,40 @@ namespace Michaelsoft.ContentManager.Server.Services
         {
             var content = GetById(id);
             if (content == null) throw new ContentNotFoundException();
+
             content.Updated = DateTime.Now;
 
-            // TODO: Map data to content
+            if (!newContent.Type.IsNullOrEmpty() && newContent.Type != content.Type)
+            {
+                content.Type = newContent.Type;
+            }
+
+            if (!newContent.Title.IsNullOrEmpty() && newContent.Title != content.Title)
+            {
+                content.Title = newContent.Title;
+                content.TitleHash = newContent.Title.Sha1();
+                content.UrlFriendlyTitle = newContent.Title.ToUrlFriendly();
+                if (CheckUrlFriendlyTitle(content.UrlFriendlyTitle))
+                    content.UrlFriendlyTitle += "_" + StringHelper.RandomString(16, uppercase: false);
+            }
+
+            if (!newContent.Subtitle.IsNullOrEmpty() && newContent.Subtitle != content.Subtitle)
+            {
+                content.Subtitle = newContent.Subtitle;
+            }
+
+            if (!newContent.TextContent.IsNullOrEmpty() && newContent.TextContent != content.TextContent)
+            {
+                content.TextContent = newContent.TextContent;
+                content.TextContentHash = newContent.TextContent.Sha1();
+            }
+
+            if (!newContent.HtmlContent.IsNullOrEmpty() && newContent.HtmlContent != content.HtmlContent)
+            {
+                content.HtmlContent = newContent.HtmlContent;
+                content.HtmlContentHash = newContent.HtmlContent.Sha1();
+            }
+
             _contents.ReplaceOne(c => c.Id == content.Id, content);
         }
 
