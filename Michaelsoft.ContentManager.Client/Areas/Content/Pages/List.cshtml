@@ -1,4 +1,5 @@
 ﻿@page
+@using Michaelsoft.ContentManager.Client.Models.Lists
 @model Michaelsoft.ContentManager.Client.Areas.Content.Pages.List
 
 @{
@@ -9,9 +10,9 @@
     <div class="content-manager_client-form_middle">
         <div class="content-manager_client-form_inner">
             <h1>List</h1>
-            <div class="content-manager_client-form_container">
-
-            </div>
+            @{
+                await Html.RenderPartialAsync("_ContentList", new ContentList());
+            }
         </div>
     </div>
 </div>

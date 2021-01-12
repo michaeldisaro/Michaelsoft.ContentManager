@@ -1,4 +1,5 @@
 ﻿@page
+@using Michaelsoft.ContentManager.Client.Models.Forms
 @model IndexModel
 
 @{
@@ -11,7 +12,7 @@
     <partial name="_Message" for="Message"/>
 
     @{
-        await Html.RenderPartialAsync("_AuthenticationForm");
+        await Html.RenderPartialAsync("_AuthenticationForm", new AuthenticationForm());
     }
 
 </div>

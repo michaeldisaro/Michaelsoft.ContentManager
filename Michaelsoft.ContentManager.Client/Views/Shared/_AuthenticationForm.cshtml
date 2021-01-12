@@ -1,16 +1,35 @@
-﻿<input type="text" id="author">
-<button class="btn btn-primary" onclick="RequestToken">RequestToken</button>
+﻿@using Michaelsoft.ContentManager.Client.Utilities
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Mvc.Localization
+@model Michaelsoft.ContentManager.Client.Models.Forms.AuthenticationForm
+@inject IHttpContextAccessor Accessor
+@inject IViewLocalizer Localizer
 
-<input type="file" id="certificate-file" onchange="window.loadCertificate()">
-<textarea id="certificate-text"></textarea>
-<button class="btn btn-primary" onclick="Authorize">Authorize</button>
-
-<script type="text/javascript">
-function loadCertificate() {
-    var fr = new FileReader();
-    fr.onload = function () {
-        document.getElementById('certificate-text').value = fr.result;
-    };
-    fr.readAsText(document.getElementById('certificate-file').files[0]);
+@{
+    var nick = JwtUtility.GetUserClaim(Model.UserClaim);
 }
-</script>
+
+@if (nick == null)
+{
+    <div>
+        <span class="login-link">
+            <a asp-area="@Model.LoginArea" asp-page="@Model.LoginPage">@Localizer[Model.LoginLabel]</a>
+        </span>
+    </div>
+}
+else
+{
+    <form method="post" asp-area="Authentication" asp-page="/Logout">
+        <div class="login-form">
+            <input type="hidden" asp-for="LogoutSuccessArea">
+            <input type="hidden" asp-for="LogoutSuccessPage">
+            <input type="hidden" asp-for="LogoutFailureArea">
+            <input type="hidden" asp-for="LogoutFailurePage">
+            <input type="hidden" asp-for="LogoutLabel">
+            <div class="form-group">
+                <label>@Localizer[Model.UserMessage] @nick</label>
+                <button type="submit" class="btn btn-primary btn-sm btn-block">@Localizer[Model.LogoutLabel]</button>
+            </div>
+        </div>
+    </form>
+}

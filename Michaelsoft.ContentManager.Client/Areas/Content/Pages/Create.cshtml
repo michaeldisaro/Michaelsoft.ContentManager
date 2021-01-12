@@ -9,8 +9,10 @@
     <div class="content-manager_client-form_middle">
         <div class="content-manager_client-form_inner">
             <h1>Create</h1>
-            <div class="content-manager_client-form_container">
-
+            <div class="content-manager_client-form_editor-container">
+                @{
+                    await Html.RenderPartialAsync("_ContentForm", Model.ContentForm);
+                }
             </div>
         </div>
     </div>

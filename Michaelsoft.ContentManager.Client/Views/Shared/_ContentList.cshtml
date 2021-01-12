@@ -1,0 +1,85 @@
+﻿@using Michaelsoft.ContentManager.Client.Interfaces
+@using Michaelsoft.ContentManager.Common.Extensions
+@using Michaelsoft.ContentManager.Common.HttpModels.Content
+@using Microsoft.AspNetCore.Mvc.Localization
+@model Michaelsoft.ContentManager.Client.Models.Lists.ContentList
+@inject IContentManagerContentApiService ContentManagerContentApiService
+@inject IViewLocalizer Localizer
+
+@{
+    List<Content> contents;
+    try
+    {
+        contents = ContentManagerContentApiService.ListContents().Result;
+    }
+    catch (Exception)
+    {
+        <p class="text-danger">@Localizer["unauthorized"]</p>
+        return;
+    }
+    if (!contents.Any())
+    {
+        return;
+    }
+}
+
+<div class="row mb-3">
+    @foreach (var content in contents)
+    {
+        <div class="col-4 p-2">
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <dt class="d-inline-block">
+                            <label asp-for="@content.Id"></label>:&nbsp;
+                        </dt>
+                        <dd class="d-inline-block">
+                            @content.Id
+                        </dd>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div>
+                        <dt class="d-inline-block">
+                            <label asp-for="@content.Title"></label>:
+                        </dt>
+                        <br>
+                        <dd class="d-inline-block" style="white-space: nowrap;">
+                            @content.Title
+                        </dd>
+                    </div>
+                    <div>
+                        <dt class="d-inline-block">
+                            <label asp-for="@content.Subtitle"></label>:
+                        </dt>
+                        <br>
+                        <dd class="d-inline-block" style="white-space: nowrap;">
+                            @content.Subtitle
+                        </dd>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-6">
+                            @*
+                            <a class="btn btn-primary btn-sm btn-block" asp-area="@Model.UpdateArea" asp-page="@Model.UpdatePage" asp-route-id="@content.Id">@Localizer[Model.UpdateLabel]</a>
+                            *@
+                        </div>
+                        <div class="col-6">
+                            @*@{
+                                await Html.RenderPartialAsync("_DeleteForm", new DeleteForm
+                                {
+                                    Id = content.Id,
+                                    SuccessArea = Model.SuccessArea,
+                                    SuccessPage = Model.SuccessPage,
+                                    FailureArea = Model.FailureArea,
+                                    FailurePage = Model.FailurePage
+                                });
+                            }*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

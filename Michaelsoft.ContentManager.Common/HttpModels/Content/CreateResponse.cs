@@ -3,7 +3,7 @@
     public class CreateResponse : BaseResponse
     {
 
-        public string Id { get; set; }
+        public Content Content { get; set; }
 
     }
 }

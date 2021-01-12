@@ -39,7 +39,7 @@ namespace Michaelsoft.ContentManager.Server.Services
 
         private bool CheckUrlFriendlyTitle(string urlFriendlyTitle) =>
             _contents.Find<DbContent>(content => content.UrlFriendlyTitle == urlFriendlyTitle).CountDocuments() > 0;
-        
+
         public DbContent GetByUrlFriendlyTitle(string urlFriendlyTitle) =>
             _contents.Find<DbContent>(content => content.UrlFriendlyTitle == urlFriendlyTitle).FirstOrDefault();
 
@@ -76,8 +76,8 @@ namespace Michaelsoft.ContentManager.Server.Services
             return content;
         }
 
-        public void Update(string id,
-                           DbContent newContent)
+        public DbContent Update(string id,
+                                DbContent newContent)
         {
             var content = GetById(id);
             if (content == null) throw new ContentNotFoundException();
@@ -87,6 +87,11 @@ namespace Michaelsoft.ContentManager.Server.Services
             if (!newContent.Type.IsNullOrEmpty() && newContent.Type != content.Type)
             {
                 content.Type = newContent.Type;
+            }
+
+            if (!newContent.Locale.IsNullOrEmpty() && newContent.Locale != content.Locale)
+            {
+                content.Locale = newContent.Locale;
             }
 
             if (!newContent.Title.IsNullOrEmpty() && newContent.Title != content.Title)
@@ -116,6 +121,7 @@ namespace Michaelsoft.ContentManager.Server.Services
             }
 
             _contents.ReplaceOne(c => c.Id == content.Id, content);
+            return content;
         }
 
     }

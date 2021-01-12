@@ -1,0 +1,135 @@
+﻿@using Michaelsoft.ContentManager.Client.Interfaces
+@using Michaelsoft.ContentManager.Common.HttpModels.Content
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Mvc.Localization
+@model Michaelsoft.ContentManager.Client.Models.Forms.ContentForm
+@inject IHttpContextAccessor HttpContextAccessor
+@inject IContentManagerContentApiService ContentManagerContentApiService
+@inject IViewLocalizer Localizer
+
+@{
+    var contentId = HttpContextAccessor.HttpContext.Request.Query["id"].ToString();
+    Content content = null;
+    try
+    {
+        if (contentId != null)
+        {
+            content = ContentManagerContentApiService.ReadContent(contentId).Result;
+        }
+    }
+    catch (Exception)
+    {
+        // NOPE
+    }
+    content ??= new Content();
+    Model.Content = content;
+}
+
+<form id="content-form" method="post" asp-area="@Model.Area" asp-page="@Model.Page">
+    <div class="content-form">
+        <input type="hidden" asp-for="SuccessArea">
+        <input type="hidden" asp-for="SuccessPage">
+        <input type="hidden" asp-for="FailureArea">
+        <input type="hidden" asp-for="FailurePage">
+        <input type="hidden" asp-for="SubmitLabel">
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group">
+                    <div class="bodyguard_form-label">
+                        <label asp-for="Type"></label>
+                    </div>
+                    <div class="bodyguard_form-input">
+                        <input asp-for="Type" class="form-control"/>
+                    </div>
+                    <div class="bodyguard_form-error">
+                        <span asp-validation-for="Type" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+                    <div class="bodyguard_form-label">
+                        <label asp-for="Locale"></label>
+                    </div>
+                    <div class="bodyguard_form-input">
+                        <input asp-for="Locale" class="form-control"/>
+                    </div>
+                    <div class="bodyguard_form-error">
+                        <span asp-validation-for="Locale" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="bodyguard_form-label">
+                <label asp-for="Content.Title"></label>
+            </div>
+            <div class="bodyguard_form-input">
+                <input asp-for="Content.Title" class="form-control"/>
+            </div>
+            <div class="bodyguard_form-error">
+                <span asp-validation-for="Content.Title" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="bodyguard_form-label">
+                <label asp-for="Content.Subtitle"></label>
+            </div>
+            <div class="bodyguard_form-input">
+                <input asp-for="Content.Subtitle" class="form-control"/>
+            </div>
+            <div class="bodyguard_form-error">
+                <span asp-validation-for="Content.Subtitle" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="bodyguard_form-label">
+                <label asp-for="Content.HtmlContent"></label>
+            </div>
+            <div class="bodyguard_form-input">
+                <input type="hidden" asp-for="Content.HtmlContent" id="html-content">
+                <input type="hidden" asp-for="Content.TextContent" id="text-content">
+                <div id="content-editor"
+                     style="height:250px;
+                            font-family:'Times New Roman',serif;
+                            font-variant:none;
+                            font-weight:normal;
+                            border:1px solid ghostwhite;
+                            border-radius:5px;">
+                </div>
+            </div>
+            <div class="bodyguard_form-error">
+                <span asp-validation-for="Content.HtmlContent" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="content-manager_client-form_container">
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-sm btn-block">@Model.SubmitLabel</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script src="~/_content/Michaelsoft.ContentManager.Client/js/ckeditor.js"></script>
+
+<script>
+    function uploadImage(editor) {
+        editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
+            console.log("uploading image");
+        };
+    }
+
+    BalloonEditor
+        .create(document.querySelector('#content-editor'), {extraPlugins: [uploadImage]})
+        .catch(error => {
+            console.error(error);
+        });
+    
+    function fillContent(){
+        var editor = document.getElementById('content-editor');
+        document.getElementById('html-content').value = editor.innerHTML;
+        document.getElementById('text-content').value = editor.innerText;
+    }
+    
+    document.getElementById("content-form").addEventListener("submit",fillContent);
+</script>

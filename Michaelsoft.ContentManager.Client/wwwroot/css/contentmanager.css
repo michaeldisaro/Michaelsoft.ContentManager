@@ -20,7 +20,7 @@ a:hover {
 div.content-manager_client-form_outer {
     display: table;
     width: 100%;
-    height: 100vh;
+    height: 90vh;
 }
 
 div.content-manager_client-form_middle {
@@ -36,6 +36,7 @@ div.content-manager_client-form_inner {
 
 div.content-manager_client-form_inner .card{
     background-color: #ffffff1a;
+    overflow: hidden;
 }
 
 div.content-manager_client-form_inner .card .card-header,
@@ -45,6 +46,11 @@ div.content-manager_client-form_inner .card .card-footer{
 
 div.content-manager_client-form_container {
     width: 300px;
+    margin: auto;
+}
+
+div.content-manager_client-form_editor-container {
+    width: 100%;
     margin: auto;
 }
 
