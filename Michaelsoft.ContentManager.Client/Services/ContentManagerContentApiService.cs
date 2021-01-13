@@ -21,9 +21,9 @@ namespace Michaelsoft.ContentManager.Client.Services
         {
         }
 
-        public async Task<CreateResponse> CreateContent(CreateRequest createRequest)
+        public async Task<ContentCreateResponse> Create(ContentCreateRequest contentCreateRequest)
         {
-            var baseApiResult = await PostRequest<CreateResponse>("Create", createRequest);
+            var baseApiResult = await PostRequest<ContentCreateResponse>("/Content/Create", contentCreateRequest);
 
             if (!baseApiResult.Success)
                 throw new Exception(baseApiResult.Message);
@@ -31,9 +31,9 @@ namespace Michaelsoft.ContentManager.Client.Services
             return baseApiResult.Response;
         }
 
-        public async Task<UpdateResponse> UpdateContent(UpdateRequest updateRequest)
+        public async Task<ContentUpdateResponse> Update(ContentUpdateRequest contentUpdateRequest)
         {
-            var baseApiResult = await PutRequest<UpdateResponse>($"Update/{updateRequest.Content.Id}", updateRequest);
+            var baseApiResult = await PutRequest<ContentUpdateResponse>($"/Content/Update/{contentUpdateRequest.Content.Id}", contentUpdateRequest);
 
             if (!baseApiResult.Success)
                 throw new Exception(baseApiResult.Message);
@@ -41,44 +41,44 @@ namespace Michaelsoft.ContentManager.Client.Services
             return baseApiResult.Response;
         }
 
-        public async Task<List<Content>> ListContents()
+        public async Task<List<Content>> List()
         {
-            var baseApiResult = await GetRequest<ListResponse>("List");
+            var baseApiResult = await GetRequest<ContentListResponse>("/Content/List");
 
             if (!baseApiResult.Success)
                 throw new Exception(baseApiResult.Message);
 
-            return ((ListResponse) baseApiResult.Response).Contents;
+            return ((ContentListResponse) baseApiResult.Response).Contents;
         }
 
-        public async Task<Content> ReadContent(string id)
+        public async Task<Content> Read(string id)
         {
-            var baseApiResult = await GetRequest<ReadResponse>($"Read/{id}");
+            var baseApiResult = await GetRequest<ContentReadResponse>($"/Content/Read/{id}");
 
             if (!baseApiResult.Success)
                 throw new Exception(baseApiResult.Message);
 
-            return ((ReadResponse) baseApiResult.Response).Content;
+            return ((ContentReadResponse) baseApiResult.Response).Content;
         }
 
-        public async Task<List<Content>> PublicListContents()
+        public async Task<List<Content>> PublicList()
         {
-            var baseApiResult = await GetRequest<ListResponse>("PublicList");
+            var baseApiResult = await GetRequest<ContentListResponse>("/Content/Public/List");
 
             if (!baseApiResult.Success)
                 throw new Exception(baseApiResult.Message);
 
-            return ((ListResponse) baseApiResult.Response).Contents;
+            return ((ContentListResponse) baseApiResult.Response).Contents;
         }
 
-        public async Task<Content> PublicReadContent(string urlFriendlyTitle)
+        public async Task<Content> PublicRead(string urlFriendlyTitle)
         {
-            var baseApiResult = await GetRequest<ReadResponse>("PublicRead");
+            var baseApiResult = await GetRequest<ContentReadResponse>("/Content/Public/Read");
 
             if (!baseApiResult.Success)
                 throw new Exception(baseApiResult.Message);
 
-            return ((ReadResponse) baseApiResult.Response).Content;
+            return ((ContentReadResponse) baseApiResult.Response).Content;
         }
 
     }

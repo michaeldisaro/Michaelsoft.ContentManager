@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Michaelsoft.ContentManager.Client.Interfaces;
 using Michaelsoft.ContentManager.Client.Models.Forms;
 using Michaelsoft.ContentManager.Common.HttpModels.Content;
@@ -26,19 +27,22 @@ namespace Michaelsoft.ContentManager.Client.Areas.Content.Pages
             {
                 ActionArea = "Content",
                 ActionPage = "/Create",
-                Content = new Common.HttpModels.Content.Content(),
+                Content = new Common.HttpModels.Content.Content
+                {
+                    Published = DateTime.Now
+                },
                 SubmitLabel = "label_create"
             };
         }
 
         public async Task<IActionResult> OnPost()
         {
-            var createRequest = new CreateRequest
+            var createRequest = new ContentCreateRequest
             {
                 Content = ContentForm.Content
             };
 
-            var result = await _contentApiService.CreateContent(createRequest);
+            var result = await _contentApiService.Create(createRequest);
 
             if (result.Success)
                 return RedirectToPage(ContentForm.SuccessPage, new {Area = ContentForm.SuccessArea});

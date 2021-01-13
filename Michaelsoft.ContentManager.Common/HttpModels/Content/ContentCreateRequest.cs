@@ -1,6 +1,6 @@
 ﻿namespace Michaelsoft.ContentManager.Common.HttpModels.Content
 {
-    public class CreateRequest
+    public class ContentCreateRequest
     {
 
         public Content Content { get; set; }

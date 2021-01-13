@@ -60,6 +60,7 @@ namespace Michaelsoft.ContentManager.Client.Extensions
 
             services.AddSingleton<IContentManagerAuthenticationApiService, ContentManagerAuthenticationApiService>();
             services.AddSingleton<IContentManagerContentApiService, ContentManagerContentApiService>();
+            services.AddSingleton<IContentManagerMediaApiService, ContentManagerMediaApiService>();
 
             services.AddRazorPages()
                     .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)

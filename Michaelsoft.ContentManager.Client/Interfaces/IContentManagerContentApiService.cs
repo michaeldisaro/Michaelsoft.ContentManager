@@ -8,17 +8,17 @@ namespace Michaelsoft.ContentManager.Client.Interfaces
     public interface IContentManagerContentApiService
     {
 
-        public Task<CreateResponse> CreateContent(CreateRequest createRequest);
+        public Task<ContentCreateResponse> Create(ContentCreateRequest contentCreateRequest);
 
-        public Task<UpdateResponse> UpdateContent(UpdateRequest updateRequest);
+        public Task<ContentUpdateResponse> Update(ContentUpdateRequest contentUpdateRequest);
 
-        public Task<List<Content>> ListContents();
+        public Task<List<Content>> List();
 
-        public Task<Content> ReadContent(string id);
+        public Task<Content> Read(string id);
 
-        public Task<List<Content>> PublicListContents();
+        public Task<List<Content>> PublicList();
 
-        public Task<Content> PublicReadContent(string urlFriendlyTitle);
+        public Task<Content> PublicRead(string urlFriendlyTitle);
 
     }
 }

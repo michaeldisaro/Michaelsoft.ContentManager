@@ -23,7 +23,7 @@ namespace Michaelsoft.ContentManager.Client.Areas.Content.Pages
 
         public async Task<IActionResult> OnGet(string id)
         {
-            var content = await _contentApiService.ReadContent(id);
+            var content = await _contentApiService.Read(id);
             ContentForm = new ContentForm
             {
                 ActionArea = "Content",
@@ -36,12 +36,12 @@ namespace Michaelsoft.ContentManager.Client.Areas.Content.Pages
 
         public async Task<IActionResult> OnPost(string id)
         {
-            var updateRequest = new UpdateRequest
+            var updateRequest = new ContentUpdateRequest
             {
                 Content = ContentForm.Content
             };
 
-            var result = await _contentApiService.UpdateContent(updateRequest);
+            var result = await _contentApiService.Update(updateRequest);
 
             if (result.Success)
                 return RedirectToPage(ContentForm.SuccessPage, new {Area = ContentForm.SuccessArea});

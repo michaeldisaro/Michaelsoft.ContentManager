@@ -40,6 +40,16 @@ namespace Michaelsoft.ContentManager.Server.Extensions
             services.AddSingleton<ContentService>();
         }
 
+        public static void AddMediaStorageSetting(this IServiceCollection services,
+                                                  IConfiguration configuration)
+        {
+            services.Configure<MediaStorageSettings>
+                (configuration.GetSection(nameof(MediaStorageSettings)));
+
+            services.AddSingleton<IMediaStorageSettings>
+                (sp => sp.GetRequiredService<IOptions<MediaStorageSettings>>().Value);
+        }
+
         public static void AddTokenService(this IServiceCollection services,
                                            IConfiguration configuration)
         {

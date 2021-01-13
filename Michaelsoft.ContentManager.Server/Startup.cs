@@ -38,6 +38,7 @@ namespace Michaelsoft.ContentManager.Server
             services.AddEncryptionService(Configuration);
             services.AddTokenService(Configuration);
             services.AddContentService(Configuration);
+            services.AddMediaStorageSetting(Configuration);
 
             services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
 
@@ -151,7 +152,7 @@ namespace Michaelsoft.ContentManager.Server
             }
 
             InjectableServicesBaseStaticClass.Services = app.ApplicationServices;
-            
+
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());

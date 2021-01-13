@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using Michaelsoft.ContentManager.Common.BaseClasses;
+﻿using Michaelsoft.ContentManager.Common.BaseClasses;
 using Microsoft.AspNetCore.Builder;
 
 namespace Michaelsoft.ContentManager.Client.Extensions
@@ -15,7 +14,7 @@ namespace Michaelsoft.ContentManager.Client.Extensions
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapBlazorHub();
+                endpoints.MapControllers();
             });
         }
 

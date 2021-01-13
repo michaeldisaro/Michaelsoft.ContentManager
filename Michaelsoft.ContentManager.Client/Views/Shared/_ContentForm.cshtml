@@ -14,7 +14,7 @@
     {
         if (contentId != null)
         {
-            content = ContentManagerContentApiService.ReadContent(contentId).Result;
+            content = ContentManagerContentApiService.Read(contentId).Result;
         }
     }
     catch (Exception)
@@ -125,28 +125,4 @@
 </form>
 
 <script src="~/_content/Michaelsoft.ContentManager.Client/js/ckeditor.js"></script>
-
-<script>
-    function uploadImage(editor) {
-        editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
-            console.log("uploading image");
-        };
-    }
-
-    BalloonEditor
-        .create(document.querySelector('#content-editor'), {extraPlugins: [uploadImage]})
-        .catch(error => {console.error(error);});
-    
-    function fillEditor(){
-        document.getElementById('content-editor').innerHTML = document.getElementById('html-content').value;
-    }
-    
-    function fillContent(){
-        var editor = document.getElementById('content-editor');
-        document.getElementById('html-content').value = editor.innerHTML;
-        document.getElementById('text-content').value = editor.innerText;
-    }
-    
-    document.getElementById("content-form").addEventListener("submit",fillContent);
-    fillEditor();
-</script>
+<script src="~/_content/Michaelsoft.ContentManager.Client/js/editorpage.js"></script>

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Michaelsoft.ContentManager.Common.Extensions;
 using Michaelsoft.ContentManager.Common.HttpModels.Content;
 using Michaelsoft.ContentManager.Server.DatabaseModels;
 using Michaelsoft.ContentManager.Server.Extensions;
@@ -12,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Michaelsoft.ContentManager.Server.Controllers
 {
     [ApiController]
-    [Route("/")]
+    [Route("/Content/")]
     public class ContentController : Controller
     {
 
@@ -28,20 +27,20 @@ namespace Michaelsoft.ContentManager.Server.Controllers
         [Authorize]
         [HttpGet("[action]/{id}")]
         [Produces("application/json")]
-        public ReadResponse Read(string id)
+        public ContentReadResponse Read(string id)
         {
             try
             {
                 var dbContent = _contentService.Get(id);
 
-                return new ReadResponse
+                return new ContentReadResponse
                 {
                     Content = dbContent.MapToContent()
                 };
             }
             catch (Exception ex)
             {
-                return new ReadResponse
+                return new ContentReadResponse
                 {
                     Success = false,
                     Message = ex.Message
@@ -52,7 +51,7 @@ namespace Michaelsoft.ContentManager.Server.Controllers
         [Authorize]
         [HttpGet("[action]")]
         [Produces("application/json")]
-        public ListResponse List()
+        public ContentListResponse List()
         {
             try
             {
@@ -62,14 +61,14 @@ namespace Michaelsoft.ContentManager.Server.Controllers
                 foreach (var dbContent in dbContents)
                     contents.Add(dbContent.MapToContent());
 
-                return new ListResponse
+                return new ContentListResponse
                 {
                     Contents = contents
                 };
             }
             catch (Exception ex)
             {
-                return new ListResponse
+                return new ContentListResponse
                 {
                     Success = false,
                     Message = ex.Message
@@ -80,33 +79,33 @@ namespace Michaelsoft.ContentManager.Server.Controllers
         [Authorize]
         [HttpPost("[action]")]
         [Produces("application/json")]
-        public CreateResponse Create([FromBody]
-                                     CreateRequest createRequest)
+        public ContentCreateResponse Create([FromBody]
+                                     ContentCreateRequest contentCreateRequest)
         {
             try
             {
                 var dbContent = new DbContent
                 {
                     Author = HttpContextUtility.LoggedUserIdentity(),
-                    Type = createRequest.Content.Type,
-                    Locale = createRequest.Content.Locale,
-                    Published = createRequest.Content.Published,
-                    Title = createRequest.Content.Title,
-                    Subtitle = createRequest.Content.Subtitle,
-                    HtmlContent = createRequest.Content.HtmlContent,
-                    TextContent = createRequest.Content.TextContent
+                    Type = contentCreateRequest.Content.Type,
+                    Locale = contentCreateRequest.Content.Locale,
+                    Published = contentCreateRequest.Content.Published,
+                    Title = contentCreateRequest.Content.Title,
+                    Subtitle = contentCreateRequest.Content.Subtitle,
+                    HtmlContent = contentCreateRequest.Content.HtmlContent,
+                    TextContent = contentCreateRequest.Content.TextContent
                 };
 
                 var newContent = _contentService.Create(dbContent);
 
-                return new CreateResponse
+                return new ContentCreateResponse
                 {
                     Content = newContent.MapToContent()
                 };
             }
             catch (Exception ex)
             {
-                return new CreateResponse
+                return new ContentCreateResponse
                 {
                     Success = false,
                     Message = ex.Message
@@ -117,34 +116,34 @@ namespace Michaelsoft.ContentManager.Server.Controllers
         [Authorize]
         [HttpPut("[action]/{id}")]
         [Produces("application/json")]
-        public UpdateResponse Update(string id,
+        public ContentUpdateResponse Update(string id,
                                      [FromBody]
-                                     UpdateRequest updateRequest)
+                                     ContentUpdateRequest contentUpdateRequest)
         {
             try
             {
                 var dbContent = new DbContent
                 {
                     Author = HttpContextUtility.LoggedUserIdentity(),
-                    Type = updateRequest.Content.Type,
-                    Locale = updateRequest.Content.Locale,
-                    Published = updateRequest.Content.Published,
-                    Title = updateRequest.Content.Title,
-                    Subtitle = updateRequest.Content.Subtitle,
-                    HtmlContent = updateRequest.Content.HtmlContent,
-                    TextContent = updateRequest.Content.TextContent
+                    Type = contentUpdateRequest.Content.Type,
+                    Locale = contentUpdateRequest.Content.Locale,
+                    Published = contentUpdateRequest.Content.Published,
+                    Title = contentUpdateRequest.Content.Title,
+                    Subtitle = contentUpdateRequest.Content.Subtitle,
+                    HtmlContent = contentUpdateRequest.Content.HtmlContent,
+                    TextContent = contentUpdateRequest.Content.TextContent
                 };
 
                 var updatedContent = _contentService.Update(id, dbContent);
 
-                return new UpdateResponse
+                return new ContentUpdateResponse
                 {
                     Content = updatedContent.MapToContent()
                 };
             }
             catch (Exception ex)
             {
-                return new UpdateResponse
+                return new ContentUpdateResponse
                 {
                     Success = false,
                     Message = ex.Message
@@ -156,22 +155,22 @@ namespace Michaelsoft.ContentManager.Server.Controllers
 
         #region FOR GUESTS
 
-        [HttpGet("[action]/{urlFriendlyTitle}")]
+        [HttpGet("Public/Read/{urlFriendlyTitle}")]
         [Produces("application/json")]
-        public ReadResponse PublicRead(string urlFriendlyTitle)
+        public ContentReadResponse PublicRead(string urlFriendlyTitle)
         {
             try
             {
                 var dbContent = _contentService.GetByUrlFriendlyTitle(urlFriendlyTitle);
 
-                return new ReadResponse
+                return new ContentReadResponse
                 {
                     Content = dbContent.MapToContent(true)
                 };
             }
             catch (Exception ex)
             {
-                return new ReadResponse
+                return new ContentReadResponse
                 {
                     Success = false,
                     Message = ex.Message
@@ -179,9 +178,9 @@ namespace Michaelsoft.ContentManager.Server.Controllers
             }
         }
 
-        [HttpGet("[action]")]
+        [HttpGet("Public/List")]
         [Produces("application/json")]
-        public ListResponse PublicList()
+        public ContentListResponse PublicList()
         {
             try
             {
@@ -191,14 +190,14 @@ namespace Michaelsoft.ContentManager.Server.Controllers
                 foreach (var dbContent in dbContents)
                     contents.Add(dbContent.MapToContent(true));
 
-                return new ListResponse
+                return new ContentListResponse
                 {
                     Contents = contents
                 };
             }
             catch (Exception ex)
             {
-                return new ListResponse
+                return new ContentListResponse
                 {
                     Success = false,
                     Message = ex.Message
