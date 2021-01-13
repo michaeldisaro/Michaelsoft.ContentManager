@@ -1,0 +1,19 @@
+﻿@page
+@model Michaelsoft.ContentManager.Client.Areas.Content.Pages.Update
+
+@{
+    Layout = "_ContentManagerLayout";
+}
+
+<div class="content-manager_client-form_outer">
+    <div class="content-manager_client-form_middle">
+        <div class="content-manager_client-form_inner">
+            <h1>Update</h1>
+            <div class="content-manager_client-form_editor-container">
+                @{
+                    await Html.RenderPartialAsync("_ContentForm", Model.ContentForm);
+                }
+            </div>
+        </div>
+    </div>
+</div>

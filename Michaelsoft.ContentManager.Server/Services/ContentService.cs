@@ -93,6 +93,11 @@ namespace Michaelsoft.ContentManager.Server.Services
             {
                 content.Locale = newContent.Locale;
             }
+            
+            if (newContent.Published != content.Published)
+            {
+                content.Published = newContent.Published;
+            }
 
             if (!newContent.Title.IsNullOrEmpty() && newContent.Title != content.Title)
             {

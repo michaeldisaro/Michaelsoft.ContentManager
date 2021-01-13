@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Michaelsoft.ContentManager.Common.HttpModels.Content
 {
@@ -6,6 +8,13 @@ namespace Michaelsoft.ContentManager.Common.HttpModels.Content
     {
 
         public string Id { get; set; }
+        
+        public string Type { get; set; }
+
+        public string Locale { get; set; }
+        
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddTHH:mm}")]
+        public DateTime Published { get; set; }
 
         public string UrlFriendlyTitle { get; set; }
 

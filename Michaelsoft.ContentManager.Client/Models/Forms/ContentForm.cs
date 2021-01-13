@@ -4,15 +4,12 @@ namespace Michaelsoft.ContentManager.Client.Models.Forms
 {
     public class ContentForm
     {
-        public string Type { get; set; }
-
-        public string Locale { get; set; }
 
         public Content Content { get; set; }
 
-        public string Area { get; set; }
+        public string ActionArea { get; set; }
 
-        public string Page { get; set; }
+        public string ActionPage { get; set; }
 
         public string SuccessArea { get; set; } = "Content";
 

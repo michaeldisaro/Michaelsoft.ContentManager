@@ -14,7 +14,7 @@ namespace Michaelsoft.ContentManager.Client.Interfaces
 
         public Task<List<Content>> ListContents();
 
-        public Task<Content> ReadContent(string contentId);
+        public Task<Content> ReadContent(string id);
 
         public Task<List<Content>> PublicListContents();
 

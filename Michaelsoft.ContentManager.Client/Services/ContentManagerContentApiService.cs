@@ -51,9 +51,9 @@ namespace Michaelsoft.ContentManager.Client.Services
             return ((ListResponse) baseApiResult.Response).Contents;
         }
 
-        public async Task<Content> ReadContent(string contentId)
+        public async Task<Content> ReadContent(string id)
         {
-            var baseApiResult = await GetRequest<ReadResponse>($"Read/{contentId}");
+            var baseApiResult = await GetRequest<ReadResponse>($"Read/{id}");
 
             if (!baseApiResult.Success)
                 throw new Exception(baseApiResult.Message);

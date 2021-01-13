@@ -24,12 +24,10 @@ namespace Michaelsoft.ContentManager.Client.Areas.Content.Pages
         {
             ContentForm = new ContentForm
             {
-                Locale = "it-IT",
-                Type = "post",
-                Area = "Content",
-                Page = "Create",
+                ActionArea = "Content",
+                ActionPage = "/Create",
                 Content = new Common.HttpModels.Content.Content(),
-                SubmitLabel = "create_label"
+                SubmitLabel = "label_create"
             };
         }
 
@@ -37,8 +35,6 @@ namespace Michaelsoft.ContentManager.Client.Areas.Content.Pages
         {
             var createRequest = new CreateRequest
             {
-                Type = ContentForm.Type,
-                Locale = ContentForm.Locale,
                 Content = ContentForm.Content
             };
 

@@ -87,9 +87,10 @@ namespace Michaelsoft.ContentManager.Server.Controllers
             {
                 var dbContent = new DbContent
                 {
-                    Type = createRequest.Type,
-                    Locale = createRequest.Locale,
                     Author = HttpContextUtility.LoggedUserIdentity(),
+                    Type = createRequest.Content.Type,
+                    Locale = createRequest.Content.Locale,
+                    Published = createRequest.Content.Published,
                     Title = createRequest.Content.Title,
                     Subtitle = createRequest.Content.Subtitle,
                     HtmlContent = createRequest.Content.HtmlContent,
@@ -124,9 +125,10 @@ namespace Michaelsoft.ContentManager.Server.Controllers
             {
                 var dbContent = new DbContent
                 {
-                    Type = updateRequest.Type,
-                    Locale = updateRequest.Locale,
                     Author = HttpContextUtility.LoggedUserIdentity(),
+                    Type = updateRequest.Content.Type,
+                    Locale = updateRequest.Content.Locale,
+                    Published = updateRequest.Content.Published,
                     Title = updateRequest.Content.Title,
                     Subtitle = updateRequest.Content.Subtitle,
                     HtmlContent = updateRequest.Content.HtmlContent,

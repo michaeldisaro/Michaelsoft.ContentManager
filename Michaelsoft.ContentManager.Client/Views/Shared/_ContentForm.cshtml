@@ -25,37 +25,51 @@
     Model.Content = content;
 }
 
-<form id="content-form" method="post" asp-area="@Model.Area" asp-page="@Model.Page">
+<form id="content-form" method="post" asp-area="@Model.ActionArea" asp-page="@Model.ActionPage">
     <div class="content-form">
         <input type="hidden" asp-for="SuccessArea">
         <input type="hidden" asp-for="SuccessPage">
         <input type="hidden" asp-for="FailureArea">
         <input type="hidden" asp-for="FailurePage">
         <input type="hidden" asp-for="SubmitLabel">
+        <input type="hidden" asp-for="Content.Id">
         <div class="row">
-            <div class="col-6">
+            <div class="col-4">
                 <div class="form-group">
                     <div class="bodyguard_form-label">
-                        <label asp-for="Type"></label>
+                        <label asp-for="Content.Type"></label>
                     </div>
                     <div class="bodyguard_form-input">
-                        <input asp-for="Type" class="form-control"/>
+                        <input asp-for="Content.Type" class="form-control"/>
                     </div>
                     <div class="bodyguard_form-error">
-                        <span asp-validation-for="Type" class="text-danger"></span>
+                        <span asp-validation-for="Content.Type" class="text-danger"></span>
                     </div>
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-4">
                 <div class="form-group">
                     <div class="bodyguard_form-label">
-                        <label asp-for="Locale"></label>
+                        <label asp-for="Content.Locale"></label>
                     </div>
                     <div class="bodyguard_form-input">
-                        <input asp-for="Locale" class="form-control"/>
+                        <input asp-for="Content.Locale" class="form-control"/>
                     </div>
                     <div class="bodyguard_form-error">
-                        <span asp-validation-for="Locale" class="text-danger"></span>
+                        <span asp-validation-for="Content.Locale" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group">
+                    <div class="bodyguard_form-label">
+                        <label asp-for="Content.Published"></label>
+                    </div>
+                    <div class="bodyguard_form-input">
+                        <input asp-for="Content.Published" class="form-control"/>
+                    </div>
+                    <div class="bodyguard_form-error">
+                        <span asp-validation-for="Content.Published" class="text-danger"></span>
                     </div>
                 </div>
             </div>
@@ -121,9 +135,11 @@
 
     BalloonEditor
         .create(document.querySelector('#content-editor'), {extraPlugins: [uploadImage]})
-        .catch(error => {
-            console.error(error);
-        });
+        .catch(error => {console.error(error);});
+    
+    function fillEditor(){
+        document.getElementById('content-editor').innerHTML = document.getElementById('html-content').value;
+    }
     
     function fillContent(){
         var editor = document.getElementById('content-editor');
@@ -132,4 +148,5 @@
     }
     
     document.getElementById("content-form").addEventListener("submit",fillContent);
+    fillEditor();
 </script>

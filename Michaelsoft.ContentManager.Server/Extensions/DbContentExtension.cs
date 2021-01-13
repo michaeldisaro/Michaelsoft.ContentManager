@@ -1,4 +1,5 @@
-﻿using Michaelsoft.ContentManager.Common.HttpModels.Content;
+﻿using System;
+using Michaelsoft.ContentManager.Common.HttpModels.Content;
 using Michaelsoft.ContentManager.Server.DatabaseModels;
 
 namespace Michaelsoft.ContentManager.Server.Extensions
@@ -12,6 +13,9 @@ namespace Michaelsoft.ContentManager.Server.Extensions
             return new Content
             {
                 Id = publicRequest ? null : dbContent.Id,
+                Type = dbContent.Type,
+                Locale = dbContent.Locale,
+                Published = dbContent.Published ?? DateTime.Now.AddYears(1),
                 UrlFriendlyTitle = dbContent.UrlFriendlyTitle,
                 Title = dbContent.Title,
                 Subtitle = dbContent.Subtitle,
