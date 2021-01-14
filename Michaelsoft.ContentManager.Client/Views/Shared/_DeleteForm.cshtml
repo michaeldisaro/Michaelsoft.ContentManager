@@ -1,0 +1,17 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model Michaelsoft.ContentManager.Client.Models.Forms.DeleteForm
+@inject IViewLocalizer Localizer
+
+<form method="post" asp-area="Content" asp-page="/Delete">
+    <div class="update-form">
+        <input type="hidden" asp-for="SuccessArea">
+        <input type="hidden" asp-for="SuccessPage">
+        <input type="hidden" asp-for="FailureArea">
+        <input type="hidden" asp-for="FailurePage">
+        <input type="hidden" asp-for="SubmitLabel">
+        <input type="hidden" asp-for="Id">
+        <div class="form-group">
+            <button type="submit" class="btn btn-danger btn-sm btn-block">@Localizer[Model.SubmitLabel]</button>
+        </div>
+    </div>
+</form>

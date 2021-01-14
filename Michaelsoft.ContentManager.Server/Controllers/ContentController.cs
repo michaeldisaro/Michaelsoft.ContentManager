@@ -80,7 +80,7 @@ namespace Michaelsoft.ContentManager.Server.Controllers
         [HttpPost("[action]")]
         [Produces("application/json")]
         public ContentCreateResponse Create([FromBody]
-                                     ContentCreateRequest contentCreateRequest)
+                                            ContentCreateRequest contentCreateRequest)
         {
             try
             {
@@ -117,8 +117,8 @@ namespace Michaelsoft.ContentManager.Server.Controllers
         [HttpPut("[action]/{id}")]
         [Produces("application/json")]
         public ContentUpdateResponse Update(string id,
-                                     [FromBody]
-                                     ContentUpdateRequest contentUpdateRequest)
+                                            [FromBody]
+                                            ContentUpdateRequest contentUpdateRequest)
         {
             try
             {
@@ -144,6 +144,26 @@ namespace Michaelsoft.ContentManager.Server.Controllers
             catch (Exception ex)
             {
                 return new ContentUpdateResponse
+                {
+                    Success = false,
+                    Message = ex.Message
+                };
+            }
+        }
+
+        [Authorize]
+        [HttpDelete("[action]/{id}")]
+        [Produces("application/json")]
+        public ContentDeleteResponse Delete(string id)
+        {
+            try
+            {
+                _contentService.Delete(id);
+                return new ContentDeleteResponse();
+            }
+            catch (Exception ex)
+            {
+                return new ContentDeleteResponse
                 {
                     Success = false,
                     Message = ex.Message

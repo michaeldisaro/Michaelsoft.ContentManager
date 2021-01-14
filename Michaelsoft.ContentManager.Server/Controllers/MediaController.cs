@@ -19,7 +19,7 @@ namespace Michaelsoft.ContentManager.Server.Controllers
             try
             {
                 var filenameWithExtension = $"{mediaCreateRequest.Filename}.{mediaCreateRequest.Extension}";
-                await MediaUtility.CreateMedia(mediaCreateRequest.Content, mediaCreateRequest.Extension, filenameWithExtension);
+                await MediaStorageUtility.CreateMedia(mediaCreateRequest.Content, mediaCreateRequest.Extension, filenameWithExtension);
                 return new MediaCreateResponse
                 {
                     FilenameWithExtension = filenameWithExtension
@@ -35,14 +35,14 @@ namespace Michaelsoft.ContentManager.Server.Controllers
             }
         }
 
-        [HttpPost("[action]/{filenameWithExtension}")]
+        [HttpGet("[action]/{filenameWithExtension}")]
         [Produces("application/json")]
         public async Task<MediaReadResponse> Read(string filenameWithExtension)
         {
             try
             {
                 var extension = filenameWithExtension.Split(".")[^1];
-                var content = await MediaUtility.GetMedia(extension, filenameWithExtension);
+                var content = await MediaStorageUtility.GetMedia(extension, filenameWithExtension);
                 return new MediaReadResponse
                 {
                     Content = content

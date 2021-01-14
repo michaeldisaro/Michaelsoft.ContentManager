@@ -23,16 +23,7 @@ namespace Michaelsoft.ContentManager.Client.Areas.Content.Pages
 
         public void OnGet()
         {
-            ContentForm = new ContentForm
-            {
-                ActionArea = "Content",
-                ActionPage = "/Create",
-                Content = new Common.HttpModels.Content.Content
-                {
-                    Published = DateTime.Now
-                },
-                SubmitLabel = "label_create"
-            };
+            
         }
 
         public async Task<IActionResult> OnPost()

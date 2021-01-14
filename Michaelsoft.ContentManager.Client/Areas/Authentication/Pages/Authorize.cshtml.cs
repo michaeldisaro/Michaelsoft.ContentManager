@@ -35,15 +35,16 @@ namespace Michaelsoft.ContentManager.Client.Areas.Authentication.Pages
 
         public async Task<IActionResult> OnPost(string token)
         {
-            if (!AuthorizeForm.AuthorizeRequest.EncryptedToken.IsNullOrEmpty())
-            {
-                var authorizeResponse =
-                    await _authenticationApiService.Authorize(AuthorizeForm.AuthorizeRequest.EncryptedToken);
-                if (authorizeResponse.Success)
-                    return RedirectToPage("Create", new {Area = "Content"});
-            }
+            if (AuthorizeForm.AuthorizeRequest.EncryptedToken.IsNullOrEmpty())
+                return RedirectToPage(AuthorizeForm.FailurePage, new {Area = AuthorizeForm.FailureArea});
 
-            return Page();
+            var authorizeResponse =
+                await _authenticationApiService.Authorize(AuthorizeForm.AuthorizeRequest.EncryptedToken);
+            
+            return authorizeResponse.Success
+                       ? RedirectToPage(AuthorizeForm.SuccessPage, new {Area = AuthorizeForm.SuccessArea})
+                       : RedirectToPage(AuthorizeForm.FailurePage, new {Area = AuthorizeForm.FailureArea});
+
         }
 
     }

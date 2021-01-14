@@ -1,6 +1,6 @@
 ﻿@page
 @using Michaelsoft.ContentManager.Client.Models.Lists
-@model Michaelsoft.ContentManager.Client.Areas.Content.Pages.List
+@model Michaelsoft.ContentManager.Client.Areas.Content.Pages.View
 
 @{
     Layout = "_ContentManagerLayout";
@@ -9,12 +9,12 @@
 <div class="content-manager_client-form_outer">
     <div class="content-manager_client-form_middle">
         <div class="content-manager_client-form_inner">
-            <h1>List</h1>
-            <a class="btn btn-primary btn-sm" asp-area="Content" asp-page="/Create">Create</a>
+            <h1>Detail</h1>
+            <a class="btn btn-primary btn-sm" asp-area="Content" asp-page="/List">Back to list</a>
             <div class="mt-5">
-            @{
-                await Html.RenderPartialAsync("_ContentList", new ContentList());
-            }
+                @{
+                    await Html.RenderPartialAsync("_ContentView", new ContentList());
+                }
             </div>
         </div>
     </div>

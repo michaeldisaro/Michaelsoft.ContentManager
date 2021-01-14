@@ -1,4 +1,5 @@
 ﻿@page
+@using Michaelsoft.ContentManager.Client.Models.Forms
 @model Michaelsoft.ContentManager.Client.Areas.Content.Pages.Create
 
 @{
@@ -9,9 +10,19 @@
     <div class="content-manager_client-form_middle">
         <div class="content-manager_client-form_inner">
             <h1>Create</h1>
-            <div class="content-manager_client-form_editor-container">
+            <a class="btn btn-primary btn-sm" asp-area="Content" asp-page="/List" >Back to list</a>
+            <div class="content-manager_client-form_editor-container mt-5">
                 @{
-                    await Html.RenderPartialAsync("_ContentForm", Model.ContentForm);
+                    await Html.RenderPartialAsync("_ContentForm", new ContentForm
+                    {
+                        ActionArea = "Content",
+                        ActionPage = "/Create",
+                        Content = new Common.HttpModels.Content.Content
+                        {
+                            Published = DateTime.Now
+                        },
+                        SubmitLabel = "label_create"
+                    });
                 }
             </div>
         </div>

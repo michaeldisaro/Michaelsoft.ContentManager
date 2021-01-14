@@ -17,7 +17,7 @@ namespace Michaelsoft.ContentManager.Client.Models.Forms
 
         public string FailureArea { get; set; } = "Authentication";
 
-        public string FailurePage { get; set; } = "/Authorize";
+        public string FailurePage { get; set; } = "/RequestToken";
 
     }
 }

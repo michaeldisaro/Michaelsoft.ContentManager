@@ -20,5 +20,7 @@ namespace Michaelsoft.ContentManager.Client.Interfaces
 
         public Task<Content> PublicRead(string urlFriendlyTitle);
 
+        public Task<ContentDeleteResponse> Delete(string id);
+
     }
 }

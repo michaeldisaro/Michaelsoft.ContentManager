@@ -15,6 +15,7 @@ namespace Michaelsoft.ContentManager.Server.Extensions
                 Id = publicRequest ? null : dbContent.Id,
                 Type = dbContent.Type,
                 Locale = dbContent.Locale,
+                Author = dbContent.Author,
                 Published = dbContent.Published ?? DateTime.Now.AddYears(1),
                 UrlFriendlyTitle = dbContent.UrlFriendlyTitle,
                 Title = dbContent.Title,

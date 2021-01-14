@@ -1,5 +1,5 @@
 ﻿@using Michaelsoft.ContentManager.Client.Interfaces
-@using Michaelsoft.ContentManager.Common.Extensions
+@using Michaelsoft.ContentManager.Client.Models.Forms
 @using Michaelsoft.ContentManager.Common.HttpModels.Content
 @using Microsoft.AspNetCore.Mvc.Localization
 @model Michaelsoft.ContentManager.Client.Models.Lists.ContentList
@@ -60,11 +60,14 @@
                 </div>
                 <div class="card-footer">
                     <div class="row">
-                        <div class="col-6">
-                            <a class="btn btn-primary btn-sm btn-block" asp-area="@Model.UpdateArea" asp-page="@Model.UpdatePage" asp-route-id="@content.Id">@Localizer[Model.UpdateLabel]</a>
+                        <div class="col-4">
+                            <a class="btn btn-primary btn-sm btn-block" asp-area="@Model.ViewArea" asp-page="@Model.ViewPage" asp-route-id="@content.Id">@Localizer[Model.ViewLabel]</a>
                         </div>
-                        <div class="col-6">
-                            @*@{
+                        <div class="col-4">
+                            <a class="btn btn-warning btn-sm btn-block" asp-area="@Model.UpdateArea" asp-page="@Model.UpdatePage" asp-route-id="@content.Id">@Localizer[Model.UpdateLabel]</a>
+                        </div>
+                        <div class="col-4">
+                            @{
                                 await Html.RenderPartialAsync("_DeleteForm", new DeleteForm
                                 {
                                     Id = content.Id,
@@ -73,7 +76,7 @@
                                     FailureArea = Model.FailureArea,
                                     FailurePage = Model.FailurePage
                                 });
-                            }*@
+                            }
                         </div>
                     </div>
                 </div>

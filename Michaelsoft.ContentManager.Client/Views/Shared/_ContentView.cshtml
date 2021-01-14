@@ -1,0 +1,105 @@
+﻿@using Michaelsoft.ContentManager.Client.Interfaces
+@using Michaelsoft.ContentManager.Client.Models.Forms
+@using Michaelsoft.ContentManager.Common.Extensions
+@using Michaelsoft.ContentManager.Common.HttpModels.Content
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Mvc.Localization
+@model Michaelsoft.ContentManager.Client.Models.Lists.ContentList
+@inject IHttpContextAccessor HttpContextAccessor
+@inject IContentManagerContentApiService ContentManagerContentApiService
+@inject IViewLocalizer Localizer
+
+@{
+    var contentId = HttpContextAccessor.HttpContext.Request.Query["id"].ToString();
+    Content content = null;
+    try
+    {
+        if (!contentId.IsNullOrEmpty())
+        {
+            content = ContentManagerContentApiService.Read(contentId).Result;
+        }
+    }
+    catch (Exception)
+    {
+        <p class="text-danger">@Localizer["unauthorized"]</p>
+        return;
+    }
+
+    if (content == null)
+    {
+        <p class="text-danger">@Localizer["not_found"]</p>
+        return;
+    }
+}
+
+<div class="row">
+    <div class="col-4">
+        <dt class="d-inline-block">
+            <label asp-for="@content.Id"></label>:&nbsp;
+        </dt>
+        <dd class="d-inline-block">
+            @content.Id
+        </dd>
+    </div>
+    <div class="col-4">
+        <dt class="d-inline-block">
+            <label asp-for="@content.Published"></label>:&nbsp;
+        </dt>
+        <dd class="d-inline-block">
+            @content.Published.ToString("dd/MM/yyyy HH:mm")
+        </dd>
+    </div>
+    <div class="col-4">
+        <dt class="d-inline-block">
+            <label asp-for="@content.Author"></label>:&nbsp;
+        </dt>
+        <dd class="d-inline-block">
+            @content.Author
+        </dd>
+    </div>
+</div>
+<div class="row">
+    <div class="col-4">
+        <dt class="d-inline-block">
+            <label asp-for="@content.Type"></label>:&nbsp;
+        </dt>
+        <dd class="d-inline-block">
+            @content.Type
+        </dd>
+    </div>
+    <div class="col-4">
+        <dt class="d-inline-block">
+            <label asp-for="@content.Locale"></label>:&nbsp;
+        </dt>
+        <dd class="d-inline-block">
+            @content.Locale
+        </dd>
+    </div>
+    <div class="col-2">
+        <a class="btn btn-warning btn-sm btn-block" asp-area="@Model.UpdateArea" asp-page="@Model.UpdatePage" asp-route-id="@content.Id">@Localizer[Model.UpdateLabel]</a>
+    </div>
+    <div class="col-2">
+        @{
+            await Html.RenderPartialAsync("_DeleteForm", new DeleteForm()
+            {
+                Id = content.Id,
+                SuccessArea = Model.SuccessArea,
+                SuccessPage = Model.SuccessPage,
+                FailureArea = Model.FailureArea,
+                FailurePage = Model.FailurePage
+            });
+        }
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <dt class="d-inline-block">
+            <label asp-for="@content.HtmlContent"></label>:&nbsp;
+        </dt>
+        <div class="html-content">
+            <link rel="stylesheet" href="~/_content/Michaelsoft.ContentManager.Client/css/content.css">
+            @Html.Raw(content.HtmlContent)
+        </div>
+    </div>
+</div>

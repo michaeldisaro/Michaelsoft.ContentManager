@@ -7,7 +7,7 @@ using Michaelsoft.ContentManager.Server.Settings;
 
 namespace Michaelsoft.ContentManager.Server.Utilities
 {
-    public class MediaUtility : InjectableServicesBaseStaticClass
+    public class MediaStorageUtility : InjectableServicesBaseStaticClass
     {
 
         private static string Init(string contentFolder,
@@ -39,6 +39,7 @@ namespace Michaelsoft.ContentManager.Server.Utilities
         {
             var path = Init(folder);
             var filePath = Path.Combine(path, $"{fileName}");
+            if (File.Exists(filePath)) return;
             await using var fileStream = new FileStream(filePath, FileMode.Create);
             await fileStream.WriteAsync(data);
         }

@@ -23,7 +23,7 @@ namespace Michaelsoft.ContentManager.Client.Services
 
         public async Task<ContentCreateResponse> Create(ContentCreateRequest contentCreateRequest)
         {
-            var baseApiResult = await PostRequest<ContentCreateResponse>("/Content/Create", contentCreateRequest);
+            var baseApiResult = await PostRequest<ContentCreateResponse>("Content/Create", contentCreateRequest);
 
             if (!baseApiResult.Success)
                 throw new Exception(baseApiResult.Message);
@@ -33,7 +33,9 @@ namespace Michaelsoft.ContentManager.Client.Services
 
         public async Task<ContentUpdateResponse> Update(ContentUpdateRequest contentUpdateRequest)
         {
-            var baseApiResult = await PutRequest<ContentUpdateResponse>($"/Content/Update/{contentUpdateRequest.Content.Id}", contentUpdateRequest);
+            var baseApiResult =
+                await PutRequest<ContentUpdateResponse>($"Content/Update/{contentUpdateRequest.Content.Id}",
+                                                        contentUpdateRequest);
 
             if (!baseApiResult.Success)
                 throw new Exception(baseApiResult.Message);
@@ -43,7 +45,7 @@ namespace Michaelsoft.ContentManager.Client.Services
 
         public async Task<List<Content>> List()
         {
-            var baseApiResult = await GetRequest<ContentListResponse>("/Content/List");
+            var baseApiResult = await GetRequest<ContentListResponse>("Content/List");
 
             if (!baseApiResult.Success)
                 throw new Exception(baseApiResult.Message);
@@ -53,7 +55,7 @@ namespace Michaelsoft.ContentManager.Client.Services
 
         public async Task<Content> Read(string id)
         {
-            var baseApiResult = await GetRequest<ContentReadResponse>($"/Content/Read/{id}");
+            var baseApiResult = await GetRequest<ContentReadResponse>($"Content/Read/{id}");
 
             if (!baseApiResult.Success)
                 throw new Exception(baseApiResult.Message);
@@ -61,9 +63,19 @@ namespace Michaelsoft.ContentManager.Client.Services
             return ((ContentReadResponse) baseApiResult.Response).Content;
         }
 
+        public async Task<ContentDeleteResponse> Delete(string id)
+        {
+            var baseApiResult = await DeleteRequest<ContentDeleteResponse>($"Content/Delete/{id}");
+
+            if (!baseApiResult.Success)
+                throw new Exception(baseApiResult.Message);
+
+            return baseApiResult.Response;
+        }
+
         public async Task<List<Content>> PublicList()
         {
-            var baseApiResult = await GetRequest<ContentListResponse>("/Content/Public/List");
+            var baseApiResult = await GetRequest<ContentListResponse>("Content/Public/List");
 
             if (!baseApiResult.Success)
                 throw new Exception(baseApiResult.Message);
@@ -73,7 +85,7 @@ namespace Michaelsoft.ContentManager.Client.Services
 
         public async Task<Content> PublicRead(string urlFriendlyTitle)
         {
-            var baseApiResult = await GetRequest<ContentReadResponse>("/Content/Public/Read");
+            var baseApiResult = await GetRequest<ContentReadResponse>("Content/Public/Read");
 
             if (!baseApiResult.Success)
                 throw new Exception(baseApiResult.Message);

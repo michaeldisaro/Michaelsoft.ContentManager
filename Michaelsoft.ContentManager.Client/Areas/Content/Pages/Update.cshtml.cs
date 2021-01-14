@@ -21,17 +21,9 @@ namespace Michaelsoft.ContentManager.Client.Areas.Content.Pages
         [BindProperty]
         public ContentForm ContentForm { get; set; }
 
-        public async Task<IActionResult> OnGet(string id)
+        public void OnGet(string id)
         {
-            var content = await _contentApiService.Read(id);
-            ContentForm = new ContentForm
-            {
-                ActionArea = "Content",
-                ActionPage = "/Update",
-                Content = content,
-                SubmitLabel = "label_update"
-            };
-            return Page();
+
         }
 
         public async Task<IActionResult> OnPost(string id)

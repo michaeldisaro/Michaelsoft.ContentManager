@@ -1,4 +1,5 @@
 ﻿@using Michaelsoft.ContentManager.Client.Interfaces
+@using Michaelsoft.ContentManager.Common.Extensions
 @using Michaelsoft.ContentManager.Common.HttpModels.Content
 @using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Mvc.Localization
@@ -12,14 +13,15 @@
     Content content = null;
     try
     {
-        if (contentId != null)
+        if (!contentId.IsNullOrEmpty())
         {
             content = ContentManagerContentApiService.Read(contentId).Result;
         }
     }
     catch (Exception)
     {
-        // NOPE
+        <p class="text-danger">@Localizer["unauthorized"]</p>
+        return;
     }
     content ??= new Content();
     Model.Content = content;
@@ -36,83 +38,88 @@
         <div class="row">
             <div class="col-4">
                 <div class="form-group">
-                    <div class="bodyguard_form-label">
+                    <div class="content-manager_form-label">
                         <label asp-for="Content.Type"></label>
                     </div>
-                    <div class="bodyguard_form-input">
+                    <div class="content-manager_form-input">
                         <input asp-for="Content.Type" class="form-control"/>
                     </div>
-                    <div class="bodyguard_form-error">
+                    <div class="content-manager_form-error">
                         <span asp-validation-for="Content.Type" class="text-danger"></span>
                     </div>
                 </div>
             </div>
             <div class="col-4">
                 <div class="form-group">
-                    <div class="bodyguard_form-label">
+                    <div class="content-manager_form-label">
                         <label asp-for="Content.Locale"></label>
                     </div>
-                    <div class="bodyguard_form-input">
+                    <div class="content-manager_form-input">
                         <input asp-for="Content.Locale" class="form-control"/>
                     </div>
-                    <div class="bodyguard_form-error">
+                    <div class="content-manager_form-error">
                         <span asp-validation-for="Content.Locale" class="text-danger"></span>
                     </div>
                 </div>
             </div>
             <div class="col-4">
                 <div class="form-group">
-                    <div class="bodyguard_form-label">
+                    <div class="content-manager_form-label">
                         <label asp-for="Content.Published"></label>
                     </div>
-                    <div class="bodyguard_form-input">
+                    <div class="content-manager_form-input">
                         <input asp-for="Content.Published" class="form-control"/>
                     </div>
-                    <div class="bodyguard_form-error">
+                    <div class="content-manager_form-error">
                         <span asp-validation-for="Content.Published" class="text-danger"></span>
                     </div>
                 </div>
             </div>
         </div>
         <div class="form-group">
-            <div class="bodyguard_form-label">
+            <div class="content-manager_form-label">
                 <label asp-for="Content.Title"></label>
             </div>
-            <div class="bodyguard_form-input">
+            <div class="content-manager_form-input">
                 <input asp-for="Content.Title" class="form-control"/>
             </div>
-            <div class="bodyguard_form-error">
+            <div class="content-manager_form-error">
                 <span asp-validation-for="Content.Title" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <div class="bodyguard_form-label">
+            <div class="content-manager_form-label">
                 <label asp-for="Content.Subtitle"></label>
             </div>
-            <div class="bodyguard_form-input">
+            <div class="content-manager_form-input">
                 <input asp-for="Content.Subtitle" class="form-control"/>
             </div>
-            <div class="bodyguard_form-error">
+            <div class="content-manager_form-error">
                 <span asp-validation-for="Content.Subtitle" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <div class="bodyguard_form-label">
+            <div class="content-manager_form-label">
                 <label asp-for="Content.HtmlContent"></label>
             </div>
-            <div class="bodyguard_form-input">
+            <div class="content-manager_form-input">
                 <input type="hidden" asp-for="Content.HtmlContent" id="html-content">
                 <input type="hidden" asp-for="Content.TextContent" id="text-content">
                 <div id="content-editor"
-                     style="height:250px;
-                            font-family:'Times New Roman',serif;
-                            font-variant:none;
-                            font-weight:normal;
-                            border:1px solid ghostwhite;
-                            border-radius:5px;">
+                          style="height:250px;
+                                 resize:none;
+                                 background-color: whitesmoke;
+                                 color: black;
+                                 font-family: serif;
+                                 font-weight: normal;
+                                 font-variant: none;
+                                 text-align: left;
+                                 border: 1px solid grey;
+                                 border-radius: 5px;
+                                 padding: 10px;">
                 </div>
             </div>
-            <div class="bodyguard_form-error">
+            <div class="content-manager_form-error">
                 <span asp-validation-for="Content.HtmlContent" class="text-danger"></span>
             </div>
         </div>

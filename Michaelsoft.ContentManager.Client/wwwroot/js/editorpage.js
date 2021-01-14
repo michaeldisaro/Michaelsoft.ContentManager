@@ -33,14 +33,14 @@
         xhr.addEventListener('abort', () => reject());
         xhr.addEventListener('load', () => {
             const response = xhr.response;
-            if (!response || response.Error) {
-                return reject(response && response.Error ? response.Error : genericErrorText);
+            if (!response || response.error) {
+                return reject(response && response.error ? response.error : genericErrorText);
             }
             resolve({
-                default: response.Url
+                default: response.url
             });
         });
-        
+
         if (xhr.upload) {
             xhr.upload.addEventListener('progress', evt => {
                 if (evt.lengthComputable) {
@@ -62,27 +62,49 @@
     }
 }
 
+let ckeditor;
+
+BalloonEditor
+    .create(document.querySelector('#content-editor'), {
+        toolbar: [
+            "undo",
+            "redo",
+            "heading",
+            "bold",
+            "italic",
+            "blockQuote",
+            "imageUpload",
+            "indent",
+            "outdent",
+            "link",
+            "numberedList",
+            "bulletedList",
+            "insertTable"
+        ],
+        extraPlugins: [uploadImage]
+    })
+    .then(editor => {
+        ckeditor = editor;
+        ckeditor.setData(document.getElementById('html-content').value);
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
 function uploadImage(editor) {
     editor.plugins.get('FileRepository').createUploadAdapter = function (loader) {
         return new MediaUploader(loader);
     };
 }
 
-BalloonEditor
-    .create(document.querySelector('#content-editor'), {extraPlugins: [uploadImage]})
-    .catch(error => {
-        console.error(error);
-    });
+function openEditor() {
 
-function fillEditor() {
-    document.getElementById('content-editor').innerHTML = document.getElementById('html-content').value;
 }
 
 function fillContent() {
-    var editor = document.getElementById('content-editor');
-    document.getElementById('html-content').value = editor.innerHTML;
-    document.getElementById('text-content').value = editor.innerText;
+    document.getElementById('html-content').value = ckeditor.getData();
+    document.getElementById('text-content').value = document.getElementById('content-editor').innerText;
 }
 
 document.getElementById("content-form").addEventListener("submit", fillContent);
-fillEditor();
+document.getElementById("content-editor").addEventListener("click", openEditor);

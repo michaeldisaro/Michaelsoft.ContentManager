@@ -1,0 +1,15 @@
+﻿@page
+@model Michaelsoft.ContentManager.Client.Areas.Content.Pages.Delete
+
+<div class="content-manager_client-form_outer">
+    <div class="content-manager_client-form_middle">
+        <div class="content-manager_client-form_inner">
+            <h1>Delete Content</h1>
+            <div class="content-manager_client-form_editor-container">
+                @{
+                    await Html.RenderPartialAsync("_DeleteForm", Model.DeleteForm);
+                }
+            </div>
+        </div>
+    </div>
+</div>

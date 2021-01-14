@@ -3,6 +3,12 @@
     public class ContentList
     {
 
+        public string ViewArea { get; set; } = "Content";
+
+        public string ViewPage { get; set; } = "/View";
+
+        public string ViewLabel { get; set; } = "link_detail";
+
         public string UpdateArea { get; set; } = "Content";
 
         public string UpdatePage { get; set; } = "/Update";

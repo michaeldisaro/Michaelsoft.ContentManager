@@ -8,11 +8,13 @@ namespace Michaelsoft.ContentManager.Common.HttpModels.Content
     {
 
         public string Id { get; set; }
-        
+
         public string Type { get; set; }
 
         public string Locale { get; set; }
-        
+
+        public string Author { get; set; }
+
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddTHH:mm}")]
         public DateTime Published { get; set; }
 
