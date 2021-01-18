@@ -7,6 +7,7 @@ using Michaelsoft.ContentManager.Client.Settings;
 using Michaelsoft.ContentManager.Common.HttpModels.Authentication;
 using Michaelsoft.ContentManager.Common.HttpModels.Content;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace Michaelsoft.ContentManager.Client.Services
 {
@@ -43,14 +44,20 @@ namespace Michaelsoft.ContentManager.Client.Services
             return baseApiResult.Response;
         }
 
-        public async Task<List<Content>> List()
+        public async Task<ContentListResponse> List(int page,
+                                                          int items)
         {
-            var baseApiResult = await GetRequest<ContentListResponse>("Content/List");
+            var url = "Content/List";
+            if (page > 0 && items > 0)
+                url = QueryHelpers.AddQueryString(url,
+                                                  new Dictionary<string, string>
+                                                      {{"page", page.ToString()}, {"items", items.ToString()}});
+            var baseApiResult = await GetRequest<ContentListResponse>(url);
 
             if (!baseApiResult.Success)
                 throw new Exception(baseApiResult.Message);
 
-            return ((ContentListResponse) baseApiResult.Response).Contents;
+            return baseApiResult.Response;
         }
 
         public async Task<Content> Read(string id)

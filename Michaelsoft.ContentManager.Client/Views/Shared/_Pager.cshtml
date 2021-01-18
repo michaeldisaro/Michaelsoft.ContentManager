@@ -1,0 +1,60 @@
+﻿@using Microsoft.AspNetCore.WebUtilities
+@model Michaelsoft.ContentManager.Client.Models.Partials.PagerModel
+
+@{
+    if (Model.ActivePage <= 0 ||
+        Model.ItemsPerPage <= 0 ||
+        Model.TotalItems / Model.ItemsPerPage <= 1)
+    {
+        return;
+    }
+    int page;
+}
+
+<div class="row mb-3">
+    <div class="col-4 p-2">
+        <nav aria-label="pages">
+            <ul class="pagination">
+                @{
+                    page = Model.ActivePage - 1;
+                    if (page > 0)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@(QueryHelpers.AddQueryString(Model.BaseUrl, new Dictionary<string, string> {{Model.PageQueryParam, page.ToString()}, {Model.ItemsQueryParam, Model.ItemsPerPage.ToString()}}))">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                    }
+                }
+                @for (var i = -((Model.NumberOfPagerPages - 1) / 2); i < ((Model.NumberOfPagerPages) / 2); i++)
+                {
+                    page = Model.ActivePage + i;
+                    if (page <= 0)
+                    {
+                        continue;
+                    }
+                    if (page > Model.TotalItems / Model.ItemsPerPage)
+                    {
+                        continue;
+                    }
+                    <li class="page-item @(page == Model.ActivePage ? "active" : "")">
+                        <a class="page-link" href="@(QueryHelpers.AddQueryString(Model.BaseUrl, new Dictionary<string, string> {{Model.PageQueryParam, page.ToString()}, {Model.ItemsQueryParam, Model.ItemsPerPage.ToString()}}))">@(page)</a>
+                    </li>
+                }
+                @{
+                    page = Model.ActivePage + 1;
+                    if (page > 0 && page <= Model.TotalItems / Model.ItemsPerPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@(QueryHelpers.AddQueryString(Model.BaseUrl, new Dictionary<string, string> {{Model.PageQueryParam, page.ToString()}, {Model.ItemsQueryParam, Model.ItemsPerPage.ToString()}}))">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    }
+                }
+            </ul>
+        </nav>
+    </div>
+</div>

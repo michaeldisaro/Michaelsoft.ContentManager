@@ -51,19 +51,25 @@ namespace Michaelsoft.ContentManager.Server.Controllers
         [Authorize]
         [HttpGet("[action]")]
         [Produces("application/json")]
-        public ContentListResponse List()
+        public ContentListResponse List(int? page,
+                                        int? items)
         {
             try
             {
-                var contents = new List<Content>();
+                var countTask = _contentService.CountAsync();
 
-                var dbContents = _contentService.GetAll();
+                var dbContents = _contentService.GetAll(page, items);
+
+                var contents = new List<Content>();
                 foreach (var dbContent in dbContents)
                     contents.Add(dbContent.MapToContent());
 
+                countTask.Wait();
+
                 return new ContentListResponse
                 {
-                    Contents = contents
+                    Contents = contents,
+                    TotalContents = countTask.Result
                 };
             }
             catch (Exception ex)

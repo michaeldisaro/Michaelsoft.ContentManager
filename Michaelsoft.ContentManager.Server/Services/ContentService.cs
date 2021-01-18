@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Michaelsoft.ContentManager.Common.Extensions;
 using Michaelsoft.ContentManager.Server.DatabaseModels;
 using Michaelsoft.ContentManager.Server.Exceptions;
@@ -26,7 +27,15 @@ namespace Michaelsoft.ContentManager.Server.Services
             _contents = database.GetCollection<DbContent>(settings.ContentsCollectionName);
         }
 
-        public List<DbContent> GetAll() => _contents.Find(content => true).ToList();
+        public Task<long> CountAsync() => _contents.CountDocumentsAsync(content => true);
+
+        public List<DbContent> GetAll(int? page = 1,
+                                      int? items = int.MaxValue) =>
+            _contents.Find(content => true)
+                     .SortByDescending(content => content.Published)
+                     .Skip((page - 1) * items)
+                     .Limit(items)
+                     .ToList();
 
         private DbContent GetById(string id) => _contents.Find<DbContent>(content => content.Id == id).FirstOrDefault();
 
@@ -93,7 +102,7 @@ namespace Michaelsoft.ContentManager.Server.Services
             {
                 content.Locale = newContent.Locale;
             }
-            
+
             if (newContent.Published != content.Published)
             {
                 content.Published = newContent.Published;

@@ -12,7 +12,8 @@ namespace Michaelsoft.ContentManager.Client.Interfaces
 
         public Task<ContentUpdateResponse> Update(ContentUpdateRequest contentUpdateRequest);
 
-        public Task<List<Content>> List();
+        public Task<ContentListResponse> List(int page,
+                                        int items);
 
         public Task<Content> Read(string id);
 

@@ -1,16 +1,25 @@
 ﻿@using Michaelsoft.ContentManager.Client.Interfaces
 @using Michaelsoft.ContentManager.Client.Models.Forms
+@using Michaelsoft.ContentManager.Client.Models.Partials
 @using Michaelsoft.ContentManager.Common.HttpModels.Content
+@using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.WebUtilities
 @model Michaelsoft.ContentManager.Client.Models.Lists.ContentList
+@inject IHttpContextAccessor HttpContextAccessor
 @inject IContentManagerContentApiService ContentManagerContentApiService
 @inject IViewLocalizer Localizer
 
 @{
+    int.TryParse(HttpContextAccessor.HttpContext.Request.Query["page"], out var page);
+    int.TryParse(HttpContextAccessor.HttpContext.Request.Query["items"], out var items);
     List<Content> contents;
+    long totalContents;
     try
     {
-        contents = ContentManagerContentApiService.List().Result;
+        var contentListResponse = ContentManagerContentApiService.List(page, items).Result;
+        contents = contentListResponse.Contents;
+        totalContents = contentListResponse.TotalContents;
     }
     catch (Exception)
     {
@@ -84,3 +93,12 @@
         </div>
     }
 </div>
+@{
+    await Html.RenderPartialAsync("_Pager", new PagerModel
+    {
+        ActivePage = page,
+        BaseUrl = HttpContextAccessor.HttpContext.Request.Path,
+        ItemsPerPage = items,
+        TotalItems = totalContents
+    });
+}
