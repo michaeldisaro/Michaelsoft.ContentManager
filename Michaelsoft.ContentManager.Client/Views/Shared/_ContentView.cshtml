@@ -98,7 +98,12 @@
             <label asp-for="@content.HtmlContent"></label>:&nbsp;
         </dt>
         <div class="html-content">
-            <link rel="stylesheet" href="~/_content/Michaelsoft.ContentManager.Client/css/content.css">
+            <environment include="Development">
+                <link rel="stylesheet" href="~/content-manager-assets/css/content.css">
+            </environment>
+            <environment exclude="">
+                <link rel="stylesheet" href="~/content-manager-assets/css/content.min.css">
+            </environment>
             @Html.Raw(content.HtmlContent)
         </div>
     </div>

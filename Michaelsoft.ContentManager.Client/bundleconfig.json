@@ -1,0 +1,30 @@
+﻿[
+  {
+    "type": "css",
+    "outputFileName": "wwwroot/css/content.min.css",
+    "inputFiles": [
+      "wwwroot/css/content.css"
+    ]
+  },
+  {
+    "type": "css",
+    "outputFileName": "wwwroot/css/contentmanager.min.css",
+    "inputFiles": [
+      "wwwroot/css/contentmanager.css"
+    ]
+  },
+  {
+    "type": "js",
+    "outputFileName": "wwwroot/js/contentform.min.js",
+    "inputFiles": [
+      "wwwroot/js/contentform.js"
+    ]
+  },
+  {
+    "type": "js",
+    "outputFileName": "wwwroot/js/authorizeform.min.js",
+    "inputFiles": [
+      "wwwroot/js/authorizeform.js"
+    ]
+  }
+]

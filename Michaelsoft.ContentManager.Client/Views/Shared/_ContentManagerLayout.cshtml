@@ -4,8 +4,13 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - ContentManager</title>
-    <link rel="stylesheet" href="~/_content/Michaelsoft.ContentManager.Client/lib/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="~/_content/Michaelsoft.ContentManager.Client/css/contentmanager.css"/>
+    <link rel="stylesheet" href="~/content-manager-assets/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <environment include="Development">
+        <link rel="stylesheet" href="~/content-manager-assets/css/contentmanager.css"/>
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/content-manager-assets/css/contentmanager.min.css"/>
+    </environment>
 </head>
 <body>
 <div class="container">
@@ -16,7 +21,7 @@
 <hr>
 <footer>
     <div class="content-manager_logo">
-        <img src="/_content/Michaelsoft.ContentManager.Client/images/content-manager-logo.png" alt="contentmanager" height="100px">
+        <img src="/content-manager-assets/images/content-manager-logo.png" alt="contentmanager" height="100px">
     </div>
     <div class="content-manager_copyright">
         <div class="title">Content Manager</div>
@@ -24,8 +29,8 @@
         <div class="link">Powered by <a href="https://ckeditor.com/">CKEditor</a></div>
     </div>
 </footer>
-<script src="~/_content/Michaelsoft.ContentManager.Client/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/_content/Michaelsoft.ContentManager.Client/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/content-manager-assets/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/content-manager-assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 @RenderSection("Scripts", required: false)
 </body>
 </html>

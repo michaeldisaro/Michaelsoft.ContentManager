@@ -1,8 +1,11 @@
-﻿@using Michaelsoft.ContentManager.Client.Interfaces
+﻿@using System.Net.Mime
+@using Michaelsoft.ContentManager.Client.Enums
+@using Michaelsoft.ContentManager.Client.Interfaces
 @using Michaelsoft.ContentManager.Common.Extensions
 @using Michaelsoft.ContentManager.Common.HttpModels.Content
 @using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Mvc.Localization
+@using ContentType = Michaelsoft.ContentManager.Client.Enums.ContentType
 @model Michaelsoft.ContentManager.Client.Models.Forms.ContentForm
 @inject IHttpContextAccessor HttpContextAccessor
 @inject IContentManagerContentApiService ContentManagerContentApiService
@@ -42,7 +45,12 @@
                         <label asp-for="Content.Type"></label>
                     </div>
                     <div class="content-manager_form-input">
-                        <input asp-for="Content.Type" class="form-control"/>
+                        @Html.DropDownListFor(m => m.Content.Type,
+                                              ContentType.GetTypesSelectListItems(),
+                                              new
+                                              {
+                                                  @class = "form-control"
+                                              })
                     </div>
                     <div class="content-manager_form-error">
                         <span asp-validation-for="Content.Type" class="text-danger"></span>
@@ -55,7 +63,12 @@
                         <label asp-for="Content.Locale"></label>
                     </div>
                     <div class="content-manager_form-input">
-                        <input asp-for="Content.Locale" class="form-control"/>
+                        @Html.DropDownListFor(m => m.Content.Locale,
+                                              Locale.GetLocalesSelectListItems(),
+                                              new
+                                              {
+                                                  @class = "form-control"
+                                              })
                     </div>
                     <div class="content-manager_form-error">
                         <span asp-validation-for="Content.Locale" class="text-danger"></span>
@@ -106,7 +119,7 @@
                 <input type="hidden" asp-for="Content.HtmlContent" id="html-content">
                 <input type="hidden" asp-for="Content.TextContent" id="text-content">
                 <div id="content-editor"
-                          style="height:250px;
+                     style="height:250px;
                                  resize:none;
                                  background-color: whitesmoke;
                                  color: black;
@@ -131,5 +144,10 @@
     </div>
 </form>
 
-<script src="~/_content/Michaelsoft.ContentManager.Client/js/ckeditor.js"></script>
-<script src="~/_content/Michaelsoft.ContentManager.Client/js/editorpage.js"></script>
+<script src="~/content-manager-assets/js/ckeditor.min.js"></script>
+<environment include="Development">
+    <script src="~/content-manager-assets/js/contentform.js"></script>
+</environment>
+<environment exclude="Development">
+    <script src="~/content-manager-assets/js/contentform.min.js"></script>
+</environment>

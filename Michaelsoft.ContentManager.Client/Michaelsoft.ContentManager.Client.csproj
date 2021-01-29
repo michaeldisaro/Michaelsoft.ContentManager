@@ -1,26 +1,34 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RazorLangVersion>3.0</RazorLangVersion>
-    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-    <LangVersion>8</LangVersion>
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.10" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.10" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\Michaelsoft.ContentManager.Common\Michaelsoft.ContentManager.Common.csproj" />
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <RazorLangVersion>3.0</RazorLangVersion>
+        <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+        <LangVersion>8</LangVersion>
+        <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+        <StaticWebAssetBasePath Condition="$(StaticWebAssetBasePath) == ''">/content-manager-assets</StaticWebAssetBasePath>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="wwwroot\**\*" />
-    <EmbeddedResource Include="Resources\**">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.10"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.10"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Michaelsoft.ContentManager.Common\Michaelsoft.ContentManager.Common.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="wwwroot\**\*">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\**">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+    </ItemGroup>
+
+    <Target Name="AssetsMinification" BeforeTargets="Build">
+        <Exec Command="gulp"/>
+    </Target>
 
 </Project>

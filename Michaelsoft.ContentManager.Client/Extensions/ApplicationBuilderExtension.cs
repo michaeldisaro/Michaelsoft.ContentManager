@@ -1,5 +1,9 @@
-﻿using Michaelsoft.ContentManager.Common.BaseClasses;
+﻿using System;
+using System.IO;
+using Michaelsoft.ContentManager.Common.BaseClasses;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.FileProviders;
 
 namespace Michaelsoft.ContentManager.Client.Extensions
 {
@@ -12,10 +16,7 @@ namespace Michaelsoft.ContentManager.Client.Extensions
             app.UseRequestLocalization();
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
 
     }
